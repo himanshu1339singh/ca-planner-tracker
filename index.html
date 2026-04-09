@@ -2,593 +2,613 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CA Inter Sep 2026 — Study Planner Tracker</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f0f13">
+<title>CA Inter Sep 2026 — Daily Study Planner</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0f0f13;--card:#1a1a24;--card2:#22223a;--border:#2a2a40;
-  --text:#e8e8f0;--dim:#8888aa;--accent:#6c5ce7;--accent2:#a29bfe;
-  --green:#00b894;--green2:#55efc4;--orange:#fdcb6e;--red:#ff7675;
-  --blue:#74b9ff;--purple:#a29bfe;--pink:#fd79a8;
-  --phase1:#6c5ce7;--phase2:#0984e3;--phase3:#00b894;
-  --phase4:#fdcb6e;--phase5:#e17055;--phase6:#d63031;
+--bg:#0a0a10;--bg2:#0f0f18;--card:#151522;--card2:#1c1c30;--card3:#222240;
+--border:#252545;--border2:#303060;
+--text:#e8e8f4;--text2:#c8c8e0;--dim:#7777aa;--dim2:#555580;
+--accent:#7c6cf0;--accent2:#a89afe;--accent3:#c4bbff;
+--green:#00c9a0;--green2:#55ffd0;--green-dim:rgba(0,201,160,0.15);
+--orange:#f0a050;--orange-dim:rgba(240,160,80,0.15);
+--red:#f06070;--red-dim:rgba(240,96,112,0.15);
+--blue:#60a0f0;--blue-dim:rgba(96,160,240,0.15);
+--purple:#a080f0;--purple-dim:rgba(160,128,240,0.15);
+--pink:#f080b0;--yellow:#f0d060;
 }
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.app{max-width:1200px;margin:0 auto;padding:16px}
+html{scroll-behavior:smooth}
+body{font-family:'SF Pro Display','SF Pro Text',-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.app{max-width:900px;margin:0 auto;padding:12px 16px 100px}
 
-/* Header */
-.header{text-align:center;padding:32px 16px 24px;position:relative}
-.header h1{font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,var(--accent2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
-.header .subtitle{color:var(--dim);font-size:0.85rem;margin-top:6px}
-.header .exam-countdown{margin-top:16px;padding:12px 24px;background:linear-gradient(135deg,rgba(108,92,231,0.15),rgba(253,121,168,0.1));border:1px solid rgba(108,92,231,0.3);border-radius:12px;display:inline-block}
-.header .exam-countdown .days-left{font-size:2rem;font-weight:800;color:var(--accent2)}
-.header .exam-countdown .days-label{font-size:0.75rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.main-header{text-align:center;padding:20px 12px 16px}
+.main-header h1{font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--accent2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.3px}
+.main-header .tagline{font-size:0.72rem;color:var(--dim);margin-top:4px;letter-spacing:0.5px}
+.countdown-row{display:flex;justify-content:center;gap:16px;margin-top:14px}
+.countdown-pill{background:linear-gradient(135deg,rgba(124,108,240,0.12),rgba(240,128,176,0.08));border:1px solid rgba(124,108,240,0.25);border-radius:10px;padding:8px 20px;text-align:center}
+.countdown-pill .c-val{font-size:1.5rem;font-weight:800;color:var(--accent2)}
+.countdown-pill .c-lbl{font-size:0.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
 
-/* Stats Bar */
-.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-.stat-card .stat-value{font-size:1.8rem;font-weight:800}
-.stat-card .stat-label{font-size:0.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
-.stat-green .stat-value{color:var(--green2)}
-.stat-blue .stat-value{color:var(--blue)}
-.stat-orange .stat-value{color:var(--orange)}
-.stat-purple .stat-value{color:var(--purple)}
-.stat-red .stat-value{color:var(--red)}
+.nav{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:4px;margin:16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex:1;min-width:0;padding:10px 6px;border:none;border-radius:9px;background:transparent;color:var(--dim);font-size:0.72rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;text-align:center}
+.nav-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 12px rgba(124,108,240,0.3)}
+.nav-btn:not(.active):hover{color:var(--text);background:rgba(255,255,255,0.03)}
 
-/* Progress bar */
-.progress-section{margin:20px 0}
-.progress-bar-outer{background:var(--card);border:1px solid var(--border);border-radius:10px;height:28px;overflow:hidden;position:relative}
-.progress-bar-inner{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 0.5s ease;position:relative}
-.progress-bar-inner::after{content:attr(data-pct);position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;font-weight:700;color:#fff}
-.progress-label{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--dim);margin-top:6px}
+.panel{display:none}.panel.active{display:block;animation:fadeUp 0.25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* Navigation */
-.nav-tabs{display:flex;gap:8px;margin:20px 0;overflow-x:auto;padding-bottom:4px}
-.nav-tab{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:0.8rem;white-space:nowrap;transition:all 0.2s}
-.nav-tab:hover{border-color:var(--accent);color:var(--text)}
-.nav-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.date-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px}
+.date-bar input[type=date]{background:transparent;border:none;color:var(--accent2);font-size:0.95rem;font-weight:700;font-family:inherit;outline:none;cursor:pointer}
+.date-bar input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.7) sepia(1) hue-rotate(220deg);cursor:pointer}
+.date-nav{display:flex;gap:6px}
+.date-nav button{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--dim);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.date-nav button:hover{border-color:var(--accent);color:var(--text)}
+.day-label{font-size:0.75rem;color:var(--dim)}
 
-/* Dashboard Grid */
-.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin:16px 0}
-.week-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
-.week-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,0.15)}
-.week-card.current-week{border-color:var(--green);box-shadow:0 0 20px rgba(0,184,148,0.15)}
-.week-card.current-week::before{content:"THIS WEEK";position:absolute;top:8px;right:8px;font-size:0.6rem;background:var(--green);color:#fff;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:0.5px}
-.week-card .wk-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.week-card .wk-name{font-weight:700;font-size:1rem}
-.week-card .wk-phase{font-size:0.65rem;padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:0.5px}
-.phase-1{background:rgba(108,92,231,0.2);color:var(--phase1)}
-.phase-2{background:rgba(9,132,227,0.2);color:var(--phase2)}
-.phase-3{background:rgba(0,184,148,0.2);color:var(--phase3)}
-.phase-4{background:rgba(253,203,110,0.2);color:var(--phase4)}
-.phase-5{background:rgba(225,112,85,0.2);color:var(--phase5)}
-.phase-6{background:rgba(214,48,49,0.2);color:var(--phase6)}
-.week-card .wk-dates{font-size:0.78rem;color:var(--dim);margin-bottom:4px}
-.week-card .wk-focus{font-size:0.82rem;color:var(--accent2);margin-bottom:10px}
-.week-card .wk-progress{height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
-.week-card .wk-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 0.3s}
-.week-card .wk-stats{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--dim);margin-top:6px}
+.section-title{font-size:0.7rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--dim);font-weight:700;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Week Detail View */
-.week-detail{display:none}
-.week-detail.active{display:block}
-.week-detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-.week-detail-header h2{font-size:1.2rem;font-weight:700}
-.back-btn{padding:8px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;font-size:0.8rem;transition:all 0.2s}
-.back-btn:hover{border-color:var(--accent);background:var(--card2)}
-.week-nav{display:flex;gap:8px}
-.week-nav button{padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--dim);cursor:pointer;font-size:0.8rem;transition:all 0.2s}
-.week-nav button:hover:not(:disabled){border-color:var(--accent);color:var(--text)}
-.week-nav button:disabled{opacity:0.3;cursor:not-allowed}
+.routine-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:8px}
+.routine-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;user-select:none}
+.routine-item:hover{border-color:var(--accent)}
+.routine-item.done{border-color:rgba(0,201,160,0.3);background:var(--green-dim)}
+.routine-chk{width:20px;height:20px;border:2px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.routine-item.done .routine-chk{background:var(--green);border-color:var(--green)}
+.routine-item.done .routine-chk::after{content:'\2713';color:#fff;font-size:0.7rem;font-weight:700}
+.routine-info .r-name{font-size:0.82rem;font-weight:600}
+.routine-info .r-time{font-size:0.68rem;color:var(--dim)}
+.routine-item.done .r-name{text-decoration:line-through;color:var(--dim)}
 
-/* Day Cards */
-.day-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all 0.2s}
-.day-card.today{border-color:var(--green);box-shadow:0 0 15px rgba(0,184,148,0.1)}
-.day-card.completed{border-color:rgba(0,184,148,0.3)}
-.day-card.sunday{border-left:3px solid var(--orange)}
-.day-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;user-select:none}
-.day-header:hover{background:rgba(255,255,255,0.02)}
-.day-info{display:flex;align-items:center;gap:12px}
-.day-num{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--card2);font-weight:700;font-size:0.85rem}
-.day-card.today .day-num{background:var(--green);color:#fff}
-.day-card.completed .day-num{background:rgba(0,184,148,0.2);color:var(--green2)}
-.day-name-date .day-name{font-weight:600;font-size:0.9rem}
-.day-name-date .day-date{font-size:0.75rem;color:var(--dim)}
-.day-status{display:flex;align-items:center;gap:8px}
-.day-pct{font-size:0.75rem;color:var(--dim)}
-.day-dots{display:flex;gap:4px}
-.day-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--border)}
-.day-dot.done{background:var(--green);border-color:var(--green)}
-.day-dot.partial{background:var(--orange);border-color:var(--orange)}
+.goals-list{display:flex;flex-direction:column;gap:6px}
+.goal-row{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.goal-row .g-chk{width:18px;height:18px;border:2px solid var(--border2);border-radius:5px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.goal-row .g-chk.done{background:var(--green);border-color:var(--green)}
+.goal-row .g-chk.done::after{content:'\2713';color:#fff;font-size:0.65rem;font-weight:700}
+.goal-row input{flex:1;background:transparent;border:none;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none}
+.goal-row input::placeholder{color:var(--dim2)}
+.goal-row.completed input{text-decoration:line-through;color:var(--dim)}
+.priority-tag{padding:2px 8px;border-radius:4px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;user-select:none;flex-shrink:0}
+.priority-high{background:var(--red-dim);color:var(--red)}
+.priority-medium{background:var(--orange-dim);color:var(--orange)}
+.priority-low{background:var(--blue-dim);color:var(--blue)}
+.add-goal-btn{border:1px dashed var(--border);background:transparent;border-radius:10px;padding:10px;color:var(--dim);font-size:0.78rem;cursor:pointer;text-align:center;margin-top:4px;transition:all 0.2s}
+.add-goal-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-.day-body{padding:0 16px 16px;display:none}
-.day-card.expanded .day-body{display:block}
+.block-list{display:flex;flex-direction:column;gap:8px}
+.study-block{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all 0.2s}
+.study-block.is-break{opacity:0.6;background:var(--bg2)}
+.study-block.is-active{border-color:var(--green);box-shadow:0 0 16px rgba(0,201,160,0.1)}
+.study-block.is-done{border-color:rgba(0,201,160,0.25)}
+.sb-header{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none}
+.sb-time{font-size:0.72rem;font-weight:700;color:var(--accent2);min-width:90px;flex-shrink:0}
+.sb-title{flex:1;font-size:0.84rem;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.study-block.is-break .sb-title{color:var(--dim);font-weight:400;font-style:italic}
+.study-block.is-done .sb-title{color:var(--dim);text-decoration:line-through}
+.sb-status-btn{padding:3px 10px;border-radius:5px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;flex-shrink:0;border:none;appearance:none;-webkit-appearance:none}
+.status-not-started{background:var(--card3);color:var(--dim)}
+.status-in-progress{background:rgba(240,160,80,0.25);color:var(--orange)}
+.status-completed{background:rgba(0,201,160,0.25);color:var(--green2)}
+.sb-body{padding:0 14px 14px;display:none}
+.study-block.expanded .sb-body{display:block}
+.sb-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sb-field label{display:block;font-size:0.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;font-weight:600}
+.sb-field input,.sb-field select{width:100%;padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:0.8rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+.sb-field input:focus,.sb-field select:focus{border-color:var(--accent)}
+.sb-field select{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237777aa'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.sb-dur{font-size:0.68rem;color:var(--dim);margin-top:6px;text-align:right}
 
-/* Task Blocks */
-.task-block{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;transition:all 0.2s}
-.task-block.done{opacity:0.65;border-color:rgba(0,184,148,0.3)}
-.task-check{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;margin-top:2px}
-.task-check:hover{border-color:var(--accent)}
-.task-check.checked{background:var(--green);border-color:var(--green)}
-.task-check.checked::after{content:"\2713";color:#fff;font-size:0.75rem;font-weight:700}
-.task-content{flex:1;min-width:0}
-.task-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px}
-.task-label.morning{color:var(--orange)}
-.task-label.practice{color:var(--blue)}
-.task-label.evening{color:var(--purple)}
-.task-text{font-size:0.85rem;line-height:1.4}
-.task-block.done .task-text{text-decoration:line-through;color:var(--dim)}
+.prod-score-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;margin:16px 0}
+.prod-ring{width:100px;height:100px;margin:0 auto 12px;position:relative}
+.prod-ring svg{transform:rotate(-90deg)}
+.prod-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:8}
+.prod-ring .ring-fg{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease,stroke 0.3s}
+.prod-ring .ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.4rem;font-weight:800}
+.prod-details{display:flex;justify-content:center;gap:20px;margin-top:8px;flex-wrap:wrap}
+.prod-detail{text-align:center}
+.prod-detail .pd-val{font-size:1.1rem;font-weight:700}
+.prod-detail .pd-lbl{font-size:0.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px}
 
-.day-notes{font-size:0.78rem;color:var(--dim);font-style:italic;padding:4px 0 0;border-top:1px solid var(--border);margin-top:4px;padding-top:8px}
+.reflection-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:16px}
+.reflection-card h3{font-size:0.85rem;font-weight:700;margin-bottom:14px;color:var(--accent2)}
+.refl-field{margin-bottom:12px}
+.refl-field label{display:block;font-size:0.72rem;color:var(--dim);margin-bottom:4px;font-weight:600}
+.refl-field textarea{width:100%;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none;resize:vertical;min-height:50px;transition:border-color 0.2s}
+.refl-field textarea:focus{border-color:var(--accent)}
 
-/* Sunday special */
-.sunday-protocol{background:rgba(253,203,110,0.05);border:1px solid rgba(253,203,110,0.2);border-radius:8px;padding:12px;margin-top:8px}
-.sunday-protocol h4{color:var(--orange);font-size:0.8rem;margin-bottom:8px}
-.sunday-protocol p{font-size:0.78rem;color:var(--dim);line-height:1.6}
+.subject-cards{display:flex;flex-direction:column;gap:10px}
+.subj-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all 0.2s}
+.subj-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.subj-name{font-size:0.95rem;font-weight:700}
+.subj-pct{font-size:1.1rem;font-weight:800}
+.subj-bar{height:8px;background:var(--card3);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.subj-bar-fill{height:100%;border-radius:4px;transition:width 0.4s ease}
+.subj-details{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.subj-stat{text-align:center;padding:8px;background:var(--card2);border-radius:8px}
+.subj-stat .ss-val{font-size:1rem;font-weight:700}
+.subj-stat .ss-lbl{font-size:0.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px}
+.subj-edit-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.subj-edit-row input{width:100%;padding:7px 9px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.78rem;font-family:inherit;outline:none;text-align:center}
+.subj-edit-row input:focus{border-color:var(--accent)}
+.subj-edit-row .se-lbl{font-size:0.6rem;color:var(--dim);text-align:center;margin-bottom:2px}
 
-/* Self Assessment */
-.assessment-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px}
-.assessment-section h3{font-size:1rem;margin-bottom:16px;color:var(--accent2)}
-.assessment-field{margin-bottom:12px}
-.assessment-field label{display:block;font-size:0.78rem;color:var(--dim);margin-bottom:4px}
-.assessment-field input,.assessment-field textarea,.assessment-field select{width:100%;padding:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:inherit;outline:none;transition:border-color 0.2s}
-.assessment-field input:focus,.assessment-field textarea:focus,.assessment-field select:focus{border-color:var(--accent)}
-.assessment-field textarea{resize:vertical;min-height:60px}
-.save-btn{padding:10px 24px;background:linear-gradient(135deg,var(--accent),var(--pink));border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;transition:opacity 0.2s}
-.save-btn:hover{opacity:0.9}
-.save-btn:active{transform:scale(0.98)}
-.saved-msg{color:var(--green);font-size:0.78rem;margin-left:12px;opacity:0;transition:opacity 0.3s}
-.saved-msg.show{opacity:1}
+.week-overview{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px}
+.week-day-cell{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s}
+.week-day-cell:hover{border-color:var(--accent)}
+.week-day-cell.today{border-color:var(--green);box-shadow:0 0 10px rgba(0,201,160,0.1)}
+.week-day-cell.selected{border-color:var(--accent);background:rgba(124,108,240,0.1)}
+.wdc-day{font-size:0.65rem;color:var(--dim);text-transform:uppercase;font-weight:600}
+.wdc-num{font-size:1.1rem;font-weight:800;margin:4px 0}
+.wdc-dots{display:flex;justify-content:center;gap:3px}
+.wdc-dot{width:6px;height:6px;border-radius:50%}
+.weekly-goals-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.weekly-goals-card h3{font-size:0.85rem;font-weight:700;margin-bottom:12px;color:var(--accent2)}
+.wg-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.wg-item:last-child{border-bottom:none}
+.wg-chk{width:18px;height:18px;border:2px solid var(--border2);border-radius:5px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.wg-chk.done{background:var(--green);border-color:var(--green)}
+.wg-chk.done::after{content:'\2713';color:#fff;font-size:0.6rem;font-weight:700}
+.wg-item input{flex:1;background:transparent;border:none;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none}
+.wg-item input::placeholder{color:var(--dim2)}
+.wg-item.completed input{text-decoration:line-through;color:var(--dim)}
+.mock-slots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.mock-slot{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.mock-slot .ms-day{font-size:0.7rem;color:var(--dim);font-weight:600;text-transform:uppercase}
+.mock-slot input{width:100%;margin-top:6px;padding:6px;background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:0.75rem;text-align:center;font-family:inherit;outline:none}
 
-/* Phase Legend */
-.phase-legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;justify-content:center}
-.phase-legend-item{font-size:0.7rem;display:flex;align-items:center;gap:4px}
-.phase-dot{width:8px;height:8px;border-radius:50%}
+.analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.ana-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.ana-card .a-val{font-size:1.8rem;font-weight:800}
+.ana-card .a-lbl{font-size:0.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
+.streak-card{background:linear-gradient(135deg,rgba(124,108,240,0.1),rgba(0,201,160,0.1));border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px}
+.streak-val{font-size:2.5rem;font-weight:800;color:var(--green2)}
+.streak-lbl{font-size:0.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.syllabus-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.syllabus-card h3{font-size:0.85rem;font-weight:700;margin-bottom:14px;color:var(--accent2)}
+.syl-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.syl-row:last-child{border-bottom:none}
+.syl-name{font-size:0.8rem;font-weight:600;min-width:100px}
+.syl-bar{flex:1;height:8px;background:var(--card3);border-radius:4px;overflow:hidden}
+.syl-bar-fill{height:100%;border-radius:4px;transition:width 0.4s}
+.syl-pct{font-size:0.78rem;font-weight:700;min-width:40px;text-align:right}
+.heatmap-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.heatmap-card h3{font-size:0.85rem;font-weight:700;margin-bottom:12px;color:var(--accent2)}
+.hm-labels{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.hm-labels span{font-size:0.55rem;color:var(--dim);text-align:center;font-weight:600}
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.hm-cell{aspect-ratio:1;border-radius:4px;background:var(--card2)}
+.hm-cell.l1{background:rgba(0,201,160,0.15)}
+.hm-cell.l2{background:rgba(0,201,160,0.3)}
+.hm-cell.l3{background:rgba(0,201,160,0.5)}
+.hm-cell.l4{background:rgba(0,201,160,0.75)}
 
-/* Responsive */
+.save-float{position:fixed;bottom:20px;right:20px;padding:12px 24px;background:linear-gradient(135deg,var(--accent),var(--pink));border:none;border-radius:12px;color:#fff;font-weight:700;font-size:0.82rem;cursor:pointer;box-shadow:0 4px 20px rgba(124,108,240,0.4);transition:all 0.2s;z-index:100;display:none}
+.save-float.visible{display:block;animation:fadeUp 0.3s ease}
+.save-float:hover{transform:translateY(-2px)}
+.save-toast{position:fixed;bottom:70px;right:20px;background:var(--green);color:#fff;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;opacity:0;transition:opacity 0.3s;z-index:101;pointer-events:none}
+.save-toast.show{opacity:1}
+
 @media(max-width:600px){
-  .app{padding:10px}
-  .header h1{font-size:1.2rem}
-  .stats-bar{grid-template-columns:repeat(2,1fr)}
-  .dashboard-grid{grid-template-columns:1fr}
-  .day-header{padding:10px 12px}
-  .week-detail-header{flex-direction:column;align-items:flex-start}
+.app{padding:8px 10px 100px}
+.main-header h1{font-size:1.1rem}
+.nav-btn{font-size:0.65rem;padding:9px 4px}
+.sb-fields{grid-template-columns:1fr}
+.week-overview{gap:4px}
+.week-day-cell{padding:8px 4px}
+.wdc-num{font-size:0.9rem}
+.mock-slots{grid-template-columns:1fr}
+.routine-grid{grid-template-columns:1fr 1fr}
+.countdown-row{gap:10px}
+.countdown-pill{padding:6px 14px}
+.countdown-pill .c-val{font-size:1.2rem}
 }
-
-/* Scrollbar */
-::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--dim)}
-
-/* Animations */
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn 0.3s ease}
 </style>
 </head>
 <body>
-<div class="app" id="app">
-  <div class="header">
-    <h1>CA INTERMEDIATE — SEP 2026</h1>
-    <div class="subtitle">Day-Wise Study Planner Tracker | Both Groups | 6 Papers | 4+2+4 Model</div>
-    <div class="exam-countdown">
-      <div class="days-left" id="daysLeft">—</div>
-      <div class="days-label">days to exam</div>
+<div class="app">
+  <div class="main-header">
+    <h1>CA INTER — SEP 2026 PLANNER</h1>
+    <div class="tagline">AIR-Level Daily Study System | Both Groups | 6 Papers</div>
+    <div class="countdown-row">
+      <div class="countdown-pill"><div class="c-val" id="cntDays">—</div><div class="c-lbl">Days Left</div></div>
+      <div class="countdown-pill"><div class="c-val" id="cntWeeks">—</div><div class="c-lbl">Weeks Left</div></div>
+      <div class="countdown-pill"><div class="c-val" id="cntHours">—</div><div class="c-lbl">Study Hrs Left</div></div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" data-tab="daily" onclick="switchTab('daily')">Daily</button>
+    <button class="nav-btn" data-tab="subjects" onclick="switchTab('subjects')">Subjects</button>
+    <button class="nav-btn" data-tab="weekly" onclick="switchTab('weekly')">Weekly</button>
+    <button class="nav-btn" data-tab="analytics" onclick="switchTab('analytics')">Analytics</button>
+  </nav>
+
+  <div class="panel active" id="panel-daily">
+    <div class="date-bar">
+      <div><input type="date" id="dateInput"><div class="day-label" id="dayLabel"></div></div>
+      <div class="date-nav">
+        <button onclick="changeDate(-1)">&#8592;</button>
+        <button onclick="changeDate(0)" style="font-size:0.7rem;width:auto;padding:0 10px">Today</button>
+        <button onclick="changeDate(1)">&#8594;</button>
+      </div>
+    </div>
+    <div class="section-title">Morning Routine — 5:30 AM</div>
+    <div class="routine-grid" id="routineGrid"></div>
+    <div class="section-title">Daily Goals</div>
+    <div class="goals-list" id="goalsList"></div>
+    <button class="add-goal-btn" onclick="addGoal()">+ Add Goal</button>
+    <div class="section-title">Study Blocks — 7:30 AM Onwards</div>
+    <div class="block-list" id="blockList"></div>
+    <div class="section-title">Productivity Score</div>
+    <div class="prod-score-card" id="prodScore"></div>
+    <div class="section-title">End of Day Reflection</div>
+    <div class="reflection-card" id="reflectionCard"></div>
+  </div>
+
+  <div class="panel" id="panel-subjects">
+    <div class="section-title">Subject Progress & Management</div>
+    <div class="subject-cards" id="subjectCards"></div>
+  </div>
+
+  <div class="panel" id="panel-weekly">
+    <div class="section-title">This Week</div>
+    <div class="week-overview" id="weekOverview"></div>
+    <div class="weekly-goals-card" id="weeklyGoalsCard">
+      <h3>Weekly Goals</h3>
+      <div id="weeklyGoalsList"></div>
+      <button class="add-goal-btn" onclick="addWeeklyGoal()" style="margin-top:8px">+ Add Weekly Goal</button>
+    </div>
+    <div class="section-title">Mock Test Slots</div>
+    <div class="mock-slots" id="mockSlots"></div>
+    <div class="section-title">Weekly Notes</div>
+    <div class="reflection-card">
+      <div class="refl-field"><label>Buffer / Backlog Plan</label><textarea id="weeklyBuffer" placeholder="What needs catching up?..." oninput="markDirty()"></textarea></div>
+      <div class="refl-field"><label>Revision Cycle Notes</label><textarea id="weeklyRevision" placeholder="What to revise this week..." oninput="markDirty()"></textarea></div>
     </div>
   </div>
 
-  <div class="stats-bar" id="statsBar"></div>
-
-  <div class="progress-section">
-    <div class="progress-bar-outer">
-      <div class="progress-bar-inner" id="mainProgress" data-pct="0%" style="width:0%"></div>
-    </div>
-    <div class="progress-label">
-      <span>Overall Completion</span>
-      <span id="progressText">0 / 0 tasks</span>
+  <div class="panel" id="panel-analytics">
+    <div class="streak-card"><div class="streak-val" id="anaStreak">0</div><div class="streak-lbl">Day Streak</div></div>
+    <div class="analytics-grid" id="anaGrid"></div>
+    <div class="syllabus-card" id="syllabusCard"><h3>Syllabus Completion</h3><div id="syllabusRows"></div></div>
+    <div class="heatmap-card"><h3>Last 28 Days — Study Consistency</h3>
+      <div class="hm-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="heatmap-grid" id="heatmapGrid"></div>
     </div>
   </div>
-
-  <div class="phase-legend">
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase1)"></div> P1: GST Sprint</div>
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase2)"></div> P2: Lecture Blitz</div>
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase3)"></div> P3: Finish + Rev Start</div>
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase4)"></div> P4: First Revision</div>
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase5)"></div> P5: Deep Practice</div>
-    <div class="phase-legend-item"><div class="phase-dot" style="background:var(--phase6)"></div> P6: Mock + Final Rev</div>
-  </div>
-
-  <div id="dashboardView">
-    <div class="dashboard-grid" id="dashboardGrid"></div>
-  </div>
-
-  <div class="week-detail" id="weekDetail"></div>
 </div>
+<button class="save-float" id="saveBtn" onclick="saveAll()">Save All</button>
+<div class="save-toast" id="saveToast">Saved!</div>
 
 <script>
-const PLANNER_DATA = {"weeks": [{"id": 1, "week": "Week 1", "dates": "Apr 08 – Apr 14", "phase": "Phase 1", "focus": "GST Sprint + Adv Acc Start", "studyDays": 6, "days": [{"num": 1, "date": "Apr 08, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 1-2 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Supply, Charging, Exemptions, ITC lectures (4 hrs)", "notes": ""}, {"num": 2, "date": "Apr 09, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 3-4 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Supply, Charging, Exemptions, ITC lectures (4 hrs)", "notes": ""}, {"num": 3, "date": "Apr 10, 2026", "day": "Friday", "morning": "Adv Acc Lecture 5-6 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Supply, Charging, Exemptions, ITC lectures (4 hrs)", "notes": ""}, {"num": 4, "date": "Apr 11, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 7-8", "practice": "Adv Acc sums (1 hr)", "evening": "GST (2 hrs — lighter day)", "notes": "Saturday: free from 4 PM"}, {"num": 5, "date": "Apr 12, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Apr 13, 2026", "day": "Monday", "morning": "Adv Acc Lecture 9-10 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Supply, Charging, Exemptions, ITC lectures (4 hrs)", "notes": ""}, {"num": 7, "date": "Apr 14, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 11-12 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Supply, Charging, Exemptions, ITC lectures (4 hrs)", "notes": ""}], "title": "WEEK 1  |  Wed, Apr 08 – Tue, Apr 14  |  Phase 1: GST Sprint + Adv Acc Start"}, {"id": 2, "week": "Week 2", "dates": "Apr 15 – Apr 21", "phase": "Phase 1", "focus": "GST Sprint + Adv Acc Start", "studyDays": 6, "days": [{"num": 1, "date": "Apr 15, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 13-14 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "GST: Registration, Returns, Payment — FINISH GST (4 hrs)", "notes": ""}, {"num": 2, "date": "Apr 16, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 15-16 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "Costing: Material costing + Labour costing lectures (4 hrs)", "notes": ""}, {"num": 3, "date": "Apr 17, 2026", "day": "Friday", "morning": "Adv Acc Lecture 17-18 (4 hrs)", "practice": "Adv Acc sums from today's chapters (2 hrs)", "evening": "Costing: Material costing + Labour costing lectures (4 hrs)", "notes": ""}, {"num": 4, "date": "Apr 18, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 19-20", "practice": "Adv Acc sums (1 hr)", "evening": "Costing (2 hrs — lighter day)", "notes": "Saturday: free from 4 PM"}, {"num": 5, "date": "Apr 19, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Apr 20, 2026", "day": "Monday", "morning": "Adv Acc Lecture 21-22 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}, {"num": 7, "date": "Apr 21, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 23-24 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}], "title": "WEEK 2  |  Wed, Apr 15 – Tue, Apr 21  |  Phase 1: GST Sprint + Adv Acc Start"}, {"id": 3, "week": "Week 3", "dates": "Apr 22 – Apr 28", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "Apr 22, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 25-26 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}, {"num": 2, "date": "Apr 23, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 27-28 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}, {"num": 3, "date": "Apr 24, 2026", "day": "Friday", "morning": "Adv Acc Lecture 29-30 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}, {"num": 4, "date": "Apr 25, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 31-32", "practice": "Adv Acc sums (1 hr)", "evening": "Costing (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "Apr 26, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Apr 27, 2026", "day": "Monday", "morning": "Adv Acc Lecture 33-34 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Overheads, Process, Contract costing (4 hrs)", "notes": ""}, {"num": 7, "date": "Apr 28, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 35-36 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Standard costing + Variance (4 hrs)", "notes": ""}], "title": "WEEK 3  |  Wed, Apr 22 – Tue, Apr 28  |  Phase 2: Lecture Blitz"}, {"id": 4, "week": "Week 4", "dates": "Apr 29 – May 05", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "Apr 29, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 37-38 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Marginal costing + CVP (4 hrs)", "notes": ""}, {"num": 2, "date": "Apr 30, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 39-40 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing: Budget + Budgetary control (4 hrs)", "notes": ""}, {"num": 3, "date": "May 01, 2026", "day": "Friday", "morning": "Adv Acc Lecture 41-42 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing DONE — Audit: Intro + SA overview (4 hrs)", "notes": ""}, {"num": 4, "date": "May 02, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 43-44", "practice": "Adv Acc sums (1 hr)", "evening": "Audit (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "May 03, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "May 04, 2026", "day": "Monday", "morning": "Adv Acc Lecture 45-46 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Audit: SA 500-599 + Reporting (4 hrs)", "notes": ""}, {"num": 7, "date": "May 05, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 47-48 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Audit: SA 600-699 + Ethics (4 hrs)", "notes": ""}], "title": "WEEK 4  |  Wed, Apr 29 – Tue, May 05  |  Phase 2: Lecture Blitz"}, {"id": 5, "week": "Week 5", "dates": "May 06 – May 12", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "May 06, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 49-50 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Audit DONE — Law: Company formation (4 hrs)", "notes": ""}, {"num": 2, "date": "May 07, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 51-52 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Law: Share capital + Debentures (4 hrs)", "notes": ""}, {"num": 3, "date": "May 08, 2026", "day": "Friday", "morning": "Adv Acc Lecture 53-54 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Law: Directors + KMP (4 hrs)", "notes": ""}, {"num": 4, "date": "May 09, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 55-56", "practice": "Adv Acc sums (1 hr)", "evening": "Law (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "May 10, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "May 11, 2026", "day": "Monday", "morning": "Adv Acc Lecture 57-58 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Law: Other Laws remaining (4 hrs)", "notes": ""}, {"num": 7, "date": "May 12, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 59-60 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Law DONE — SM: Strategic analysis (4 hrs)", "notes": ""}], "title": "WEEK 5  |  Wed, May 06 – Tue, May 12  |  Phase 2: Lecture Blitz"}, {"id": 6, "week": "Week 6", "dates": "May 13 – May 19", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "May 13, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 61-62 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "SM: SWOT, Porter's Five Forces (4 hrs)", "notes": ""}, {"num": 2, "date": "May 14, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 63-64 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "SM: BCG Matrix, Ansoff Matrix (4 hrs)", "notes": ""}, {"num": 3, "date": "May 15, 2026", "day": "Friday", "morning": "Adv Acc Lecture 65-66 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "SM: Strategy implementation + control (4 hrs)", "notes": ""}, {"num": 4, "date": "May 16, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 67-68", "practice": "Adv Acc sums (1 hr)", "evening": "SM DONE — FM (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "May 17, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "May 18, 2026", "day": "Monday", "morning": "Adv Acc Lecture 69-70 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "FM: Capital budgeting — NPV, IRR (4 hrs)", "notes": ""}, {"num": 7, "date": "May 19, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 71-72 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "FM: Cost of capital — WACC (4 hrs)", "notes": ""}], "title": "WEEK 6  |  Wed, May 13 – Tue, May 19  |  Phase 2: Lecture Blitz"}, {"id": 7, "week": "Week 7", "dates": "May 20 – May 26", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "May 20, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 73-74 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "FM: Leverage + Capital structure (4 hrs)", "notes": ""}, {"num": 2, "date": "May 21, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 75-76 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "FM: Working capital management (4 hrs)", "notes": ""}, {"num": 3, "date": "May 22, 2026", "day": "Friday", "morning": "Adv Acc Lecture 77-78 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "FM: Dividend decisions (4 hrs)", "notes": ""}, {"num": 4, "date": "May 23, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 79-80", "practice": "Adv Acc sums (1 hr)", "evening": "FM DONE — DT revision starts (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "May 24, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "May 25, 2026", "day": "Monday", "morning": "Adv Acc Lecture 81-82 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "GST revision + IDT practice (4 hrs)", "notes": ""}, {"num": 7, "date": "May 26, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 83-84 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "DT revision: Salary + HP + PGBP (4 hrs)", "notes": ""}], "title": "WEEK 7  |  Wed, May 20 – Tue, May 26  |  Phase 2: Lecture Blitz"}, {"id": 8, "week": "Week 8", "dates": "May 27 – Jun 02", "phase": "Phase 2", "focus": "Lecture Blitz", "studyDays": 6, "days": [{"num": 1, "date": "May 27, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 85-86 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "DT revision: Capital Gains + Other Sources (4 hrs)", "notes": ""}, {"num": 2, "date": "May 28, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 87-88 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing revision: Material + Labour (4 hrs)", "notes": ""}, {"num": 3, "date": "May 29, 2026", "day": "Friday", "morning": "Adv Acc Lecture 89-90 (4 hrs)", "practice": "Adv Acc sums (2 hrs)", "evening": "Costing revision: Overheads + Standard costing (4 hrs)", "notes": ""}, {"num": 4, "date": "May 30, 2026", "day": "Saturday", "morning": "Adv Acc Lecture 91-92", "practice": "Adv Acc sums (1 hr)", "evening": "DT (2 hrs)", "notes": "Saturday: lighter day"}, {"num": 5, "date": "May 31, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jun 01, 2026", "day": "Monday", "morning": "Adv Acc Lecture 93-94 (4 hrs) — FINAL LECTURES", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Tax: DT full revision + Salary computations (4 hrs)", "notes": ""}, {"num": 7, "date": "Jun 02, 2026", "day": "Tuesday", "morning": "Adv Acc Lecture 95-96 (4 hrs) — FINAL LECTURES", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Tax: PGBP + Capital Gains problems (4 hrs)", "notes": ""}], "title": "WEEK 8  |  Wed, May 27 – Tue, Jun 02  |  Phase 2: Lecture Blitz"}, {"id": 9, "week": "Week 9", "dates": "Jun 03 – Jun 09", "phase": "Phase 3", "focus": "Adv Acc Finish + Rev Start", "studyDays": 6, "days": [{"num": 1, "date": "Jun 03, 2026", "day": "Wednesday", "morning": "Adv Acc Lecture 97-98 (4 hrs) — FINAL LECTURES", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Costing: Full revision pass + standard costing (4 hrs)", "notes": ""}, {"num": 2, "date": "Jun 04, 2026", "day": "Thursday", "morning": "Adv Acc Lecture 99-100 (4 hrs) — FINAL LECTURES", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Audit: SA-wise revision + Ethics (4 hrs)", "notes": ""}, {"num": 3, "date": "Jun 05, 2026", "day": "Friday", "morning": "Adv Acc Rev: Ind AS 1-5 + problems", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "FM: Capital budgeting + Working capital numericals (4 hrs)", "notes": ""}, {"num": 4, "date": "Jun 06, 2026", "day": "Saturday", "morning": "Adv Acc Rev: Ind AS 6-10 + problems", "practice": "Adv Acc sums (1 hr)", "evening": "SM (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jun 07, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jun 08, 2026", "day": "Monday", "morning": "Adv Acc Rev: Consolidation + AS", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Tax: PGBP + Capital Gains problems (4 hrs)", "notes": ""}, {"num": 7, "date": "Jun 09, 2026", "day": "Tuesday", "morning": "Adv Acc Rev: Remaining + one-page summaries", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Costing: Full revision pass + standard costing (4 hrs)", "notes": ""}], "title": "WEEK 9  |  Wed, Jun 03 – Tue, Jun 09  |  Phase 3: Adv Acc Finish + Rev Start"}, {"id": 10, "week": "Week 10", "dates": "Jun 10 – Jun 16", "phase": "Phase 3", "focus": "Adv Acc Finish + Rev Start", "studyDays": 6, "days": [{"num": 1, "date": "Jun 10, 2026", "day": "Wednesday", "morning": "Adv Acc Rev: Weak areas + practice manual", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "Audit: SA-wise revision + Ethics (4 hrs)", "notes": ""}, {"num": 2, "date": "Jun 11, 2026", "day": "Thursday", "morning": "Adv Acc Rev: RTP problems", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "FM: Capital budgeting + Working capital numericals (4 hrs)", "notes": ""}, {"num": 3, "date": "Jun 12, 2026", "day": "Friday", "morning": "Adv Acc Rev: Ind AS 1-5 + problems", "practice": "Adv Acc practice / RTP problems (2 hrs)", "evening": "SM: Strategic frameworks revision (4 hrs)", "notes": ""}, {"num": 4, "date": "Jun 13, 2026", "day": "Saturday", "morning": "Adv Acc Rev: Ind AS 6-10 + problems", "practice": "Adv Acc sums (1 hr)", "evening": "Tax (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jun 14, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jun 15, 2026", "day": "Monday", "morning": "Adv Acc: Ind AS deep revision + Practice Manual (4 hrs)", "practice": "Adv Acc problems — timed (2 hrs)", "evening": "Tax: DT Salary + HP + PGBP revision (4 hrs)", "notes": ""}, {"num": 7, "date": "Jun 16, 2026", "day": "Tuesday", "morning": "Adv Acc: Partnership + Consolidation problems (4 hrs)", "practice": "Tax computation drills (2 hrs)", "evening": "Costing: Full revision + standard costing (4 hrs)", "notes": ""}], "title": "WEEK 10  |  Wed, Jun 10 – Tue, Jun 16  |  Phase 3: Adv Acc Finish + Rev Start"}, {"id": 11, "week": "Week 11", "dates": "Jun 17 – Jun 23", "phase": "Phase 4", "focus": "First Revision Cycle", "studyDays": 6, "days": [{"num": 1, "date": "Jun 17, 2026", "day": "Wednesday", "morning": "Tax: DT computation practice — timed (4 hrs)", "practice": "Costing problems — timed (2 hrs)", "evening": "Audit: SA 200-499 + Ethics (4 hrs)", "notes": ""}, {"num": 2, "date": "Jun 18, 2026", "day": "Thursday", "morning": "Tax: IDT revision + GST amendments (4 hrs)", "practice": "MCQ Marathon: 60 Qs mixed (2 hrs)", "evening": "Law: Company formation + Directors (4 hrs)", "notes": ""}, {"num": 3, "date": "Jun 19, 2026", "day": "Friday", "morning": "Costing: Standard costing + Marginal — timed problems (4 hrs)", "practice": "FM numericals — timed (2 hrs)", "evening": "FM: Cost of capital + Leverage (4 hrs)", "notes": ""}, {"num": 4, "date": "Jun 20, 2026", "day": "Saturday", "morning": "Costing: Decision making + Budget problems", "practice": "Law + Audit MCQs — 60 Qs (1 hr)", "evening": "SM: Porter's + BCG + SWOT (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jun 21, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jun 22, 2026", "day": "Monday", "morning": "Law: Section-wise revision + case laws (4 hrs)", "practice": "Tax computation drills (2 hrs)", "evening": "Audit: SA 500+ + Reporting (4 hrs)", "notes": ""}, {"num": 7, "date": "Jun 23, 2026", "day": "Tuesday", "morning": "FM: All numerical chapters — timed practice (4 hrs)", "practice": "Costing problems — timed (2 hrs)", "evening": "Law: Meetings + Other Laws (4 hrs)", "notes": ""}], "title": "WEEK 11  |  Wed, Jun 17 – Tue, Jun 23  |  Phase 4: First Revision Cycle"}, {"id": 12, "week": "Week 12", "dates": "Jun 24 – Jun 30", "phase": "Phase 4", "focus": "First Revision Cycle", "studyDays": 6, "days": [{"num": 1, "date": "Jun 24, 2026", "day": "Wednesday", "morning": "SM: Case studies + framework application (4 hrs)", "practice": "MCQ Marathon: 60 Qs mixed (2 hrs)", "evening": "FM: Working capital + Dividend (4 hrs)", "notes": ""}, {"num": 2, "date": "Jun 25, 2026", "day": "Thursday", "morning": "Adv Acc: RTP/MTP solving — timed (4 hrs)", "practice": "FM numericals — timed (2 hrs)", "evening": "Costing: Budget + Marginal costing (4 hrs)", "notes": ""}, {"num": 3, "date": "Jun 26, 2026", "day": "Friday", "morning": "Tax: RTP/MTP solving — timed (4 hrs)", "practice": "Law + Audit MCQs — 60 Qs (2 hrs)", "evening": "SM: Strategy implementation (4 hrs)", "notes": ""}, {"num": 4, "date": "Jun 27, 2026", "day": "Saturday", "morning": "Adv Acc: Ind AS deep revision + Practice Manual", "practice": "Adv Acc problems — timed (1 hr)", "evening": "Tax: DT Salary + HP + PGBP revision (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jun 28, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jun 29, 2026", "day": "Monday", "morning": "Tax: DT computation practice — timed (4 hrs)", "practice": "Costing problems — timed (2 hrs)", "evening": "Audit: SA 200-499 + Ethics (4 hrs)", "notes": ""}, {"num": 7, "date": "Jun 30, 2026", "day": "Tuesday", "morning": "Tax: IDT revision + GST amendments (4 hrs)", "practice": "MCQ Marathon: 60 Qs mixed (2 hrs)", "evening": "Law: Company formation + Directors (4 hrs)", "notes": ""}], "title": "WEEK 12  |  Wed, Jun 24 – Tue, Jun 30  |  Phase 4: First Revision Cycle"}, {"id": 13, "week": "Week 13", "dates": "Jul 01 – Jul 07", "phase": "Phase 4", "focus": "First Revision Cycle", "studyDays": 6, "days": [{"num": 1, "date": "Jul 01, 2026", "day": "Wednesday", "morning": "Costing: Standard costing + Marginal — timed problems (4 hrs)", "practice": "FM numericals — timed (2 hrs)", "evening": "FM: Cost of capital + Leverage (4 hrs)", "notes": ""}, {"num": 2, "date": "Jul 02, 2026", "day": "Thursday", "morning": "Costing: Decision making + Budget problems (4 hrs)", "practice": "Law + Audit MCQs — 60 Qs (2 hrs)", "evening": "SM: Porter's + BCG + SWOT (4 hrs)", "notes": ""}, {"num": 3, "date": "Jul 03, 2026", "day": "Friday", "morning": "Audit: SA revision + Ethics case studies (4 hrs)", "practice": "Adv Acc problems — timed (2 hrs)", "evening": "Tax: Capital Gains + Deductions (4 hrs)", "notes": ""}, {"num": 4, "date": "Jul 04, 2026", "day": "Saturday", "morning": "Law: Section-wise revision + case laws", "practice": "Tax computation drills (1 hr)", "evening": "Audit: SA 500+ + Reporting (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jul 05, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jul 06, 2026", "day": "Monday", "morning": "SM: Case studies + framework application (4 hrs)", "practice": "MCQ Marathon: 60 Qs mixed (2 hrs)", "evening": "FM: Working capital + Dividend (4 hrs)", "notes": ""}, {"num": 7, "date": "Jul 07, 2026", "day": "Tuesday", "morning": "Adv Acc: RTP/MTP solving — timed (4 hrs)", "practice": "FM numericals — timed (2 hrs)", "evening": "Costing: Budget + Marginal costing (4 hrs)", "notes": ""}], "title": "WEEK 13  |  Wed, Jul 01 – Tue, Jul 07  |  Phase 4: First Revision Cycle"}, {"id": 14, "week": "Week 14", "dates": "Jul 08 – Jul 14", "phase": "Phase 4", "focus": "First Revision Cycle", "studyDays": 6, "days": [{"num": 1, "date": "Jul 08, 2026", "day": "Wednesday", "morning": "Tax: RTP/MTP solving — timed (4 hrs)", "practice": "Law + Audit MCQs — 60 Qs (2 hrs)", "evening": "SM: Strategy implementation (4 hrs)", "notes": ""}, {"num": 2, "date": "Jul 09, 2026", "day": "Thursday", "morning": "Adv Acc: Ind AS deep revision + Practice Manual (4 hrs)", "practice": "Adv Acc problems — timed (2 hrs)", "evening": "Tax: DT Salary + HP + PGBP revision (4 hrs)", "notes": ""}, {"num": 3, "date": "Jul 10, 2026", "day": "Friday", "morning": "Adv Acc: Partnership + Consolidation problems (4 hrs)", "practice": "Tax computation drills (2 hrs)", "evening": "Costing: Full revision + standard costing (4 hrs)", "notes": ""}, {"num": 4, "date": "Jul 11, 2026", "day": "Saturday", "morning": "Tax: DT computation practice — timed", "practice": "Costing problems — timed (1 hr)", "evening": "Audit: SA 200-499 + Ethics (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jul 12, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jul 13, 2026", "day": "Monday", "morning": "Adv Acc: RTP/MTP full paper — timed (4 hrs)", "practice": "Adv Acc: Error analysis + fixes (2 hrs)", "evening": "Tax: IDT timed practice + amendments (4 hrs)", "notes": ""}, {"num": 7, "date": "Jul 14, 2026", "day": "Tuesday", "morning": "Tax: DT past paper — timed (4 hrs)", "practice": "Tax: Weak area revision (2 hrs)", "evening": "Adv Acc: 2nd revision — weak chapters (4 hrs)", "notes": ""}], "title": "WEEK 14  |  Wed, Jul 08 – Tue, Jul 14  |  Phase 4: First Revision Cycle"}, {"id": 15, "week": "Week 15", "dates": "Jul 15 – Jul 21", "phase": "Phase 5", "focus": "Deep Practice + 2nd Rev", "studyDays": 6, "days": [{"num": 1, "date": "Jul 15, 2026", "day": "Wednesday", "morning": "Costing: RTP full attempt — timed (4 hrs)", "practice": "Costing: Formula review + drill (2 hrs)", "evening": "Audit: SA revision + writing practice (4 hrs)", "notes": ""}, {"num": 2, "date": "Jul 16, 2026", "day": "Thursday", "morning": "Audit: RTP + case study MCQs (4 hrs)", "practice": "Audit: MCQ practice — 50 Qs (2 hrs)", "evening": "FM + SM: RTP solving (4 hrs)", "notes": ""}, {"num": 3, "date": "Jul 17, 2026", "day": "Friday", "morning": "FM: Past paper numericals — timed (4 hrs)", "practice": "FM: Formula sheet revision (2 hrs)", "evening": "Costing: 2nd revision + formulas (4 hrs)", "notes": ""}, {"num": 4, "date": "Jul 18, 2026", "day": "Saturday", "morning": "Law: Past paper + MCQ marathon (3 hrs)", "practice": "SM: Framework flashcards (1 hr)", "evening": "Weak areas + planning (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jul 19, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jul 20, 2026", "day": "Monday", "morning": "Tax: IDT RTP/MTP — timed (4 hrs)", "practice": "Tax: Weak area revision (2 hrs)", "evening": "MCQ Marathon: 80 Qs — CMA + Audit (4 hrs)", "notes": ""}, {"num": 7, "date": "Jul 21, 2026", "day": "Tuesday", "morning": "SM: Case study RTP solving (4 hrs)", "practice": "Costing: Formula review + drill (2 hrs)", "evening": "MCQ Marathon: 80 Qs — Law + FM-SM (4 hrs)", "notes": ""}], "title": "WEEK 15  |  Wed, Jul 15 – Tue, Jul 21  |  Phase 5: Deep Practice + 2nd Rev"}, {"id": 16, "week": "Week 16", "dates": "Jul 22 – Jul 28", "phase": "Phase 5", "focus": "Deep Practice + 2nd Rev", "studyDays": 6, "days": [{"num": 1, "date": "Jul 22, 2026", "day": "Wednesday", "morning": "Costing: Past paper — timed (4 hrs)", "practice": "Audit: MCQ practice — 50 Qs (2 hrs)", "evening": "Tax: Amendment questions practice (4 hrs)", "notes": ""}, {"num": 2, "date": "Jul 23, 2026", "day": "Thursday", "morning": "Adv Acc: Weak chapters — Error Log (4 hrs)", "practice": "FM: Formula sheet revision (2 hrs)", "evening": "Adv Acc: One-page summary review (4 hrs)", "notes": ""}, {"num": 3, "date": "Jul 24, 2026", "day": "Friday", "morning": "Mixed: All subjects weak areas (4 hrs)", "practice": "SM: Framework flashcards (2 hrs)", "evening": "All: Error Log complete review (4 hrs)", "notes": ""}, {"num": 4, "date": "Jul 25, 2026", "day": "Saturday", "morning": "Adv Acc: RTP/MTP full paper — timed (3 hrs)", "practice": "Adv Acc: Error analysis + fixes (1 hr)", "evening": "Weak areas + planning (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Jul 26, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Jul 27, 2026", "day": "Monday", "morning": "Costing: RTP full attempt — timed (4 hrs)", "practice": "Costing: Formula review + drill (2 hrs)", "evening": "Audit: SA revision + writing practice (4 hrs)", "notes": ""}, {"num": 7, "date": "Jul 28, 2026", "day": "Tuesday", "morning": "Audit: RTP + case study MCQs (4 hrs)", "practice": "Audit: MCQ practice — 50 Qs (2 hrs)", "evening": "FM + SM: RTP solving (4 hrs)", "notes": ""}], "title": "WEEK 16  |  Wed, Jul 22 – Tue, Jul 28  |  Phase 5: Deep Practice + 2nd Rev"}, {"id": 17, "week": "Week 17", "dates": "Jul 29 – Aug 04", "phase": "Phase 5", "focus": "Deep Practice + 2nd Rev", "studyDays": 6, "days": [{"num": 1, "date": "Jul 29, 2026", "day": "Wednesday", "morning": "FM: Past paper numericals — timed (4 hrs)", "practice": "FM: Formula sheet revision (2 hrs)", "evening": "Costing: 2nd revision + formulas (4 hrs)", "notes": ""}, {"num": 2, "date": "Jul 30, 2026", "day": "Thursday", "morning": "Law: Past paper + MCQ marathon (4 hrs)", "practice": "SM: Framework flashcards (2 hrs)", "evening": "Law: 2nd revision + sections drill (4 hrs)", "notes": ""}, {"num": 3, "date": "Jul 31, 2026", "day": "Friday", "morning": "Adv Acc: Ind AS problems — exam speed (4 hrs)", "practice": "Adv Acc: Error analysis + fixes (2 hrs)", "evening": "MCQ Marathon: 80 Qs — Adv Acc + Tax (4 hrs)", "notes": ""}, {"num": 4, "date": "Aug 01, 2026", "day": "Saturday", "morning": "Tax: IDT RTP/MTP — timed (3 hrs)", "practice": "Tax: Weak area revision (1 hr)", "evening": "Weak areas + planning (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Aug 02, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Aug 03, 2026", "day": "Monday", "morning": "Costing: Past paper — timed (4 hrs)", "practice": "Audit: MCQ practice — 50 Qs (2 hrs)", "evening": "Tax: Amendment questions practice (4 hrs)", "notes": ""}, {"num": 7, "date": "Aug 04, 2026", "day": "Tuesday", "morning": "Adv Acc: Weak chapters — Error Log (4 hrs)", "practice": "FM: Formula sheet revision (2 hrs)", "evening": "Adv Acc: One-page summary review (4 hrs)", "notes": ""}], "title": "WEEK 17  |  Wed, Jul 29 – Tue, Aug 04  |  Phase 5: Deep Practice + 2nd Rev"}, {"id": 18, "week": "Week 18", "dates": "Aug 05 – Aug 11", "phase": "Phase 5", "focus": "Deep Practice + 2nd Rev", "studyDays": 6, "days": [{"num": 1, "date": "Aug 05, 2026", "day": "Wednesday", "morning": "Mixed: All subjects weak areas (4 hrs)", "practice": "SM: Framework flashcards (2 hrs)", "evening": "All: Error Log complete review (4 hrs)", "notes": ""}, {"num": 2, "date": "Aug 06, 2026", "day": "Thursday", "morning": "Adv Acc: RTP/MTP full paper — timed (4 hrs)", "practice": "Adv Acc: Error analysis + fixes (2 hrs)", "evening": "Tax: IDT timed practice + amendments (4 hrs)", "notes": ""}, {"num": 3, "date": "Aug 07, 2026", "day": "Friday", "morning": "Tax: DT past paper — timed (4 hrs)", "practice": "Tax: Weak area revision (2 hrs)", "evening": "Adv Acc: 2nd revision — weak chapters (4 hrs)", "notes": ""}, {"num": 4, "date": "Aug 08, 2026", "day": "Saturday", "morning": "Costing: RTP full attempt — timed (3 hrs)", "practice": "Costing: Formula review + drill (1 hr)", "evening": "Weak areas + planning (2 hrs)", "notes": "Saturday lighter"}, {"num": 5, "date": "Aug 09, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Aug 10, 2026", "day": "Monday", "morning": "Mock: Adv Acc — full 3 hrs", "practice": "Analysis + revision (2 hrs)", "evening": "Mock: Tax — full 3 hrs + analysis", "notes": "DOUBLE MOCK DAY"}, {"num": 7, "date": "Aug 11, 2026", "day": "Tuesday", "morning": "Adv Acc + Tax error deep dive (4 hrs)", "practice": "Fix weak areas (2 hrs)", "evening": "Law: Quick 3rd revision (4 hrs)", "notes": ""}], "title": "WEEK 18  |  Wed, Aug 05 – Tue, Aug 11  |  Phase 5: Deep Practice + 2nd Rev"}, {"id": 19, "week": "Week 19", "dates": "Aug 12 – Aug 18", "phase": "Phase 6", "focus": "Mock Exam + Final Rev", "studyDays": 6, "days": [{"num": 1, "date": "Aug 12, 2026", "day": "Wednesday", "morning": "Mock: Law — full 3 hrs", "practice": "Analysis + fixes (2 hrs)", "evening": "Error pattern review (4 hrs)", "notes": ""}, {"num": 2, "date": "Aug 13, 2026", "day": "Thursday", "morning": "Mock: CMA — full 3 hrs", "practice": "Analysis + formulas (2 hrs)", "evening": "Mock: Audit — full 3 hrs", "notes": "DOUBLE MOCK DAY"}, {"num": 3, "date": "Aug 14, 2026", "day": "Friday", "morning": "CMA + Audit analysis (4 hrs)", "practice": "Fix weak areas (2 hrs)", "evening": "Mock: FM-SM — full 3 hrs", "notes": ""}, {"num": 4, "date": "Aug 15, 2026", "day": "Saturday", "morning": "FM-SM analysis + all weak areas (4 hrs)", "practice": "Amendments final review (1 hr)", "evening": "Planning + rest", "notes": "LIGHTER"}, {"num": 5, "date": "Aug 16, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Aug 17, 2026", "day": "Monday", "morning": "Group I Mock: Paper 1 (3 hrs) + Analysis", "practice": "Targeted revision (2 hrs)", "evening": "Group I Mock: Paper 2 (3 hrs)", "notes": ""}, {"num": 7, "date": "Aug 18, 2026", "day": "Tuesday", "morning": "Group I Mock: Paper 3 (3 hrs) + Analysis", "practice": "Targeted revision (2 hrs)", "evening": "Weak area deep dive (4 hrs)", "notes": ""}], "title": "WEEK 19  |  Wed, Aug 12 – Tue, Aug 18  |  Phase 6: Mock Exam + Final Rev"}, {"id": 20, "week": "Week 20", "dates": "Aug 19 – Aug 25", "phase": "Phase 6", "focus": "Mock Exam + Final Rev", "studyDays": 6, "days": [{"num": 1, "date": "Aug 19, 2026", "day": "Wednesday", "morning": "Adv Acc: 3rd rev — Ind AS weak areas (4 hrs)", "practice": "Error Log problems (2 hrs)", "evening": "Tax: Amendments + tricky areas (4 hrs)", "notes": ""}, {"num": 2, "date": "Aug 20, 2026", "day": "Thursday", "morning": "Law: 3rd rev — key sections (4 hrs)", "practice": "Law MCQs — 80 Qs (2 hrs)", "evening": "Costing: 3rd rev — weak chapters (4 hrs)", "notes": ""}, {"num": 3, "date": "Aug 21, 2026", "day": "Friday", "morning": "Audit: 3rd rev — SAs + Ethics (4 hrs)", "practice": "Audit MCQs — 60 Qs (2 hrs)", "evening": "FM + SM: 3rd rev pass (4 hrs)", "notes": ""}, {"num": 4, "date": "Aug 22, 2026", "day": "Saturday", "morning": "Error Log: Complete review (4 hrs)", "practice": "Formula sheets finalize (1 hr)", "evening": "One-page summaries review (2 hrs)", "notes": "LIGHTER"}, {"num": 5, "date": "Aug 23, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Aug 24, 2026", "day": "Monday", "morning": "Group II Mock: Paper 4 (3 hrs) + Analysis", "practice": "Targeted revision (2 hrs)", "evening": "Group II Mock: Paper 5 (3 hrs)", "notes": ""}, {"num": 7, "date": "Aug 25, 2026", "day": "Tuesday", "morning": "Group II Mock: Paper 6 (3 hrs) + Analysis", "practice": "Targeted revision (2 hrs)", "evening": "Lowest scoring areas (4 hrs)", "notes": ""}], "title": "WEEK 20  |  Wed, Aug 19 – Tue, Aug 25  |  Phase 6: Mock Exam + Final Rev"}, {"id": 21, "week": "Week 21", "dates": "Aug 26 – Sep 01", "phase": "Phase 6", "focus": "Mock Exam + Final Rev", "studyDays": 6, "days": [{"num": 1, "date": "Aug 26, 2026", "day": "Wednesday", "morning": "Adv Acc: Final weak area pass (4 hrs)", "practice": "Tax: Amendment final review (2 hrs)", "evening": "Costing + FM: Formula drill (4 hrs)", "notes": ""}, {"num": 2, "date": "Aug 27, 2026", "day": "Thursday", "morning": "Law + Audit: Final section/SA review (4 hrs)", "practice": "SM: Final framework pass (2 hrs)", "evening": "MCQ marathon: 100 Qs all subjects (4 hrs)", "notes": ""}, {"num": 3, "date": "Aug 28, 2026", "day": "Friday", "morning": "Error Log: FINAL complete review (4 hrs)", "practice": "One-page summaries (2 hrs)", "evening": "Flashcard final pass (4 hrs)", "notes": ""}, {"num": 4, "date": "Aug 29, 2026", "day": "Saturday", "morning": "Adv Acc summary rev (3 hrs)", "practice": "10 key problems from Error Log (2 hrs)", "evening": "Tax summaries + amendments (3 hrs)", "notes": ""}, {"num": 5, "date": "Aug 30, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Aug 31, 2026", "day": "Monday", "morning": "Quick rev: Paper 1 summaries (2 hrs)", "practice": "REST", "evening": "Light Ind AS review (1 hr). Sleep by 9:30.", "notes": "DAY BEFORE EXAM"}, {"num": 7, "date": "Sep 01, 2026", "day": "Tuesday", "morning": "30 min formula glance. EXAM.", "practice": "REST", "evening": "Quick rev: Paper 2 — Law sections (2 hrs)", "notes": "EXAM DAY"}], "title": "WEEK 21  |  Wed, Aug 26 – Tue, Sep 01  |  Phase 6: Mock Exam + Final Rev"}, {"id": 22, "week": "Week 22", "dates": "Sep 02 – Sep 07", "phase": "Phase 6", "focus": "Mock Exam + Final Rev", "studyDays": 5, "days": [{"num": 1, "date": "Sep 02, 2026", "day": "Wednesday", "morning": "30 min sections glance. EXAM.", "practice": "REST", "evening": "Quick rev: Paper 3 — Tax amendments (2 hrs)", "notes": "EXAM DAY"}, {"num": 2, "date": "Sep 03, 2026", "day": "Thursday", "morning": "30 min amendment notes. EXAM.", "practice": "REST", "evening": "Quick rev: Paper 4 — CMA formulas (2 hrs)", "notes": "EXAM DAY"}, {"num": 3, "date": "Sep 04, 2026", "day": "Friday", "morning": "30 min formula sheet. EXAM.", "practice": "REST", "evening": "Quick rev: Paper 5 — Audit SA chart (2 hrs)", "notes": "EXAM DAY"}, {"num": 4, "date": "Sep 05, 2026", "day": "Saturday", "morning": "30 min SA glance. EXAM.", "practice": "REST", "evening": "Quick rev: Paper 6 — FM+SM (2 hrs)", "notes": "EXAM DAY"}, {"num": 5, "date": "Sep 06, 2026", "day": "Sunday", "morning": "SUNDAY — TESTING DAY", "practice": "See Sunday protocol below", "evening": "Rest evening from 5 PM", "notes": "SUNDAY: Weekly Test (3 hrs) + Self-evaluation + Weak area study + Plan next week + REST evening"}, {"num": 6, "date": "Sep 07, 2026", "day": "Monday", "morning": "Paper 6 if applicable. EXAM.", "practice": "REST", "evening": "YOU DID IT. REST.", "notes": "FINAL DAY"}, {"num": null, "date": "", "day": null, "morning": null, "practice": null, "evening": null, "notes": ""}], "title": "WEEK 22  |  Wed, Sep 02 – Mon, Sep 07  |  Phase 6: Mock Exam + Final Rev"}]};
+const EXAM=new Date('2026-09-08'),SK='ca_daily_planner_v2';
+const SUBJECTS=[
+  {id:'advacc',name:'Adv. Accounting',color:'#a89afe',total:80,unit:'lectures'},
+  {id:'cost',name:'Cost & Mgmt Acc.',color:'#60a0f0',total:50,unit:'lectures'},
+  {id:'audit',name:'Auditing',color:'#00c9a0',total:40,unit:'chapters'},
+  {id:'law',name:'Corp. & Other Laws',color:'#f0a050',total:35,unit:'chapters'},
+  {id:'dt',name:'Direct Tax',color:'#f06070',total:45,unit:'chapters'},
+  {id:'gst',name:'GST',color:'#a080f0',total:30,unit:'chapters'}
+];
+const SUBJ_NAMES=SUBJECTS.map(s=>s.name);
+const ROUTINES=[
+  {id:'workout',name:'Workout',time:'5:30 – 6:15 AM'},
+  {id:'yoga',name:'Yoga & Meditation',time:'6:15 – 6:45 AM'},
+  {id:'freshen',name:'Freshen Up',time:'6:45 – 7:00 AM'},
+  {id:'breakfast',name:'Breakfast + Plan',time:'7:00 – 7:30 AM'}
+];
+const BLOCKS=[
+  {id:'s1',time:'7:30 – 9:30',label:'Deep Study 1',dur:'2 hrs',brk:false,mins:120},
+  {id:'b1',time:'9:30 – 10:00',label:'Break',dur:'30 min',brk:true},
+  {id:'s2',time:'10:00 – 12:00',label:'Study Session 2',dur:'2 hrs',brk:false,mins:120},
+  {id:'lunch',time:'12:00 – 1:00',label:'Lunch Break',dur:'1 hr',brk:true},
+  {id:'s3',time:'1:00 – 3:00',label:'Study Session 3',dur:'2 hrs',brk:false,mins:120},
+  {id:'b2',time:'3:00 – 3:30',label:'Break',dur:'30 min',brk:true},
+  {id:'s4',time:'3:30 – 5:30',label:'Study Session 4',dur:'2 hrs',brk:false,mins:120},
+  {id:'b3',time:'5:30 – 6:30',label:'Break / Refresh',dur:'1 hr',brk:true},
+  {id:'s5',time:'6:30 – 8:00',label:'Light Revision',dur:'1.5 hrs',brk:false,mins:90},
+  {id:'dinner',time:'8:00 – 9:00',label:'Dinner + Wind Down',dur:'1 hr',brk:true},
+  {id:'s6',time:'9:00 – 9:30',label:'Quick Rev / Planning',dur:'30 min',brk:false,mins:30}
+];
+const STUDY_BLOCKS=BLOCKS.filter(b=>!b.brk);
+const TYPES=['Lecture','Practice','Revision','Mock Test','Reading'];
+const STATUSES=['Not Started','In Progress','Completed'];
+const PRIORITIES=['high','medium','low'];
 
-const STORAGE_KEY = 'ca_planner_tracker_v1';
-const EXAM_DATE = new Date('2026-09-08');
+let db={},currentDate='',dirty=false,expandedBlock=null;
+function ld(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return{}}}
+function sv(){localStorage.setItem(SK,JSON.stringify(db))}
+function dk(d){return d||currentDate}
+function dd(d){const k=dk(d);if(!db[k])db[k]={routines:{},goals:[],blocks:{},reflection:{}};return db[k]}
+function wk(){const d=new Date(currentDate+'T12:00:00');const day=d.getDay();const m=new Date(d);m.setDate(d.getDate()-(day===0?6:day-1));return 'w_'+fmt(m)}
+function wd(){const k=wk();if(!db[k])db[k]={goals:[],mocks:{},buffer:'',revision:''};return db[k]}
+function sd(){if(!db._subj){db._subj={};SUBJECTS.forEach(s=>{db._subj[s.id]={done:0,revised:0,practiced:0}})}return db._subj}
+function fmt(d){return d.toISOString().split('T')[0]}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function markDirty(){dirty=true;document.getElementById('saveBtn').classList.add('visible')}
 
-// State
-let state = loadState();
-let currentWeek = null;
-
-function loadState() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch(e) {}
-  return { tasks: {}, assessments: {} };
+function collectDaily(){
+  const d=dd();
+  d.goals=[];
+  document.querySelectorAll('#goalsList .goal-row').forEach(r=>{
+    const inp=r.querySelector('input'),chk=r.querySelector('.g-chk'),pri=r.querySelector('.priority-tag');
+    if(inp.value.trim())d.goals.push({text:inp.value,done:chk.classList.contains('done'),priority:pri.dataset.pri||'medium'});
+  });
+  STUDY_BLOCKS.forEach(b=>{
+    const el=document.getElementById('block_'+b.id);if(!el)return;
+    if(!d.blocks[b.id])d.blocks[b.id]={};
+    const bd=d.blocks[b.id];
+    bd.subject=el.querySelector('.sb-subj')?.value||'';
+    bd.topic=el.querySelector('.sb-topic')?.value||'';
+    bd.type=el.querySelector('.sb-type')?.value||'Lecture';
+    bd.status=el.querySelector('.sb-stat')?.value||'Not Started';
+  });
+  d.reflection={
+    well:document.getElementById('r_well')?.value||'',
+    didnt:document.getElementById('r_didnt')?.value||'',
+    improve:document.getElementById('r_improve')?.value||'',
+    tomorrow:document.getElementById('r_tomorrow')?.value||''
+  };
+}
+function collectWeekly(){
+  const w=wd();w.goals=[];
+  document.querySelectorAll('#weeklyGoalsList .wg-item').forEach(r=>{
+    const inp=r.querySelector('input'),chk=r.querySelector('.wg-chk');
+    if(inp&&inp.value.trim())w.goals.push({text:inp.value,done:chk.classList.contains('done')});
+  });
+  w.buffer=document.getElementById('weeklyBuffer')?.value||'';
+  w.revision=document.getElementById('weeklyRevision')?.value||'';
+  w.mocks={};
+  document.querySelectorAll('.mock-slot input').forEach(i=>{w.mocks[i.dataset.day]=i.value});
+}
+function collectSubjects(){
+  const s=sd();
+  SUBJECTS.forEach(sub=>{
+    const c=document.getElementById('subj_'+sub.id);if(!c)return;
+    s[sub.id]={done:parseInt(c.querySelector('.se-done')?.value)||0,revised:parseInt(c.querySelector('.se-rev')?.value)||0,practiced:parseInt(c.querySelector('.se-prac')?.value)||0};
+  });
 }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function taskKey(weekId, dayNum, block) {
-  return `w${weekId}_d${dayNum}_${block}`;
-}
-
-function isTaskDone(weekId, dayNum, block) {
-  return !!state.tasks[taskKey(weekId, dayNum, block)];
-}
-
-function toggleTask(weekId, dayNum, block) {
-  const key = taskKey(weekId, dayNum, block);
-  state.tasks[key] = !state.tasks[key];
-  saveState();
+function saveAll(){
+  collectDaily();collectWeekly();collectSubjects();
+  sv();dirty=false;
+  document.getElementById('saveBtn').classList.remove('visible');
+  const t=document.getElementById('saveToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);
   render();
 }
 
-function getWeekProgress(weekId) {
-  const week = PLANNER_DATA.weeks[weekId - 1];
-  let total = 0, done = 0;
-  week.days.forEach(day => {
-    ['morning','practice','evening'].forEach(block => {
-      total++;
-      if (isTaskDone(weekId, day.num, block)) done++;
-    });
-  });
-  return { total, done, pct: total ? Math.round(done/total*100) : 0 };
+function init(){
+  db=ld();currentDate=fmt(new Date());
+  document.getElementById('dateInput').value=currentDate;
+  document.getElementById('dateInput').addEventListener('change',e=>{if(dirty)saveAll();currentDate=e.target.value;render()});
+  render();
+}
+function changeDate(o){
+  if(dirty)saveAll();
+  if(o===0)currentDate=fmt(new Date());
+  else{const d=new Date(currentDate+'T12:00:00');d.setDate(d.getDate()+o);currentDate=fmt(d)}
+  document.getElementById('dateInput').value=currentDate;render();
+}
+function switchTab(tab){
+  if(dirty)saveAll();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  render();
 }
 
-function getDayProgress(weekId, dayNum) {
-  let total = 3, done = 0;
-  ['morning','practice','evening'].forEach(block => {
-    if (isTaskDone(weekId, dayNum, block)) done++;
-  });
-  return { total, done, pct: Math.round(done/total*100) };
+function render(){
+  const now=new Date(),diff=Math.ceil((EXAM-now)/864e5);
+  document.getElementById('cntDays').textContent=Math.max(0,diff);
+  document.getElementById('cntWeeks').textContent=Math.max(0,Math.floor(diff/7));
+  document.getElementById('cntHours').textContent=Math.max(0,Math.round(diff*9.5));
+  renderDayLabel();renderRoutines();renderGoals();renderBlocks();renderProd();renderReflection();
+  renderSubjects();renderWeekly();renderAnalytics();
 }
 
-function getTotalProgress() {
-  let total = 0, done = 0;
-  PLANNER_DATA.weeks.forEach(week => {
-    week.days.forEach(day => {
-      ['morning','practice','evening'].forEach(block => {
-        total++;
-        if (isTaskDone(week.id, day.num, block)) done++;
-      });
-    });
-  });
-  return { total, done, pct: total ? Math.round(done/total*100) : 0 };
+function renderDayLabel(){
+  const d=new Date(currentDate+'T12:00:00');
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('dayLabel').textContent=days[d.getDay()]+', '+mons[d.getMonth()]+' '+d.getDate()+(currentDate===fmt(new Date())?' — TODAY':'');
 }
 
-function getCurrentWeekId() {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  for (const week of PLANNER_DATA.weeks) {
-    const dates = week.dates.replace(/\u2013/g, '–').split('–').map(s => s.trim());
-    const startStr = dates[0] + ', 2026';
-    const endStr = dates[1] + ', 2026';
-    const start = new Date(startStr); start.setHours(0,0,0,0);
-    const end = new Date(endStr); end.setHours(23,59,59,999);
-    if (today >= start && today <= end) return week.id;
-  }
-  return null;
+function renderRoutines(){
+  const d=dd();
+  document.getElementById('routineGrid').innerHTML=ROUTINES.map(r=>
+    `<div class="routine-item ${d.routines[r.id]?'done':''}" onclick="dd().routines['${r.id}']=!dd().routines['${r.id}'];markDirty();render()">
+      <div class="routine-chk"></div><div class="routine-info"><div class="r-name">${r.name}</div><div class="r-time">${r.time}</div></div>
+    </div>`).join('');
 }
 
-function getTodayStr() {
-  const d = new Date();
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const m = months[d.getMonth()];
-  const day = d.getDate().toString().padStart(2, '0');
-  return `${m} ${day}, 2026`;
+function renderGoals(){
+  const d=dd();
+  const goals=d.goals&&d.goals.length?d.goals:[{text:'',done:false,priority:'high'},{text:'',done:false,priority:'medium'},{text:'',done:false,priority:'medium'}];
+  document.getElementById('goalsList').innerHTML=goals.map((g,i)=>
+    `<div class="goal-row ${g.done?'completed':''}">
+      <div class="g-chk ${g.done?'done':''}" onclick="this.classList.toggle('done');this.closest('.goal-row').classList.toggle('completed');markDirty()"></div>
+      <input value="${esc(g.text)}" placeholder="Goal ${i+1}..." oninput="markDirty()">
+      <span class="priority-tag priority-${g.priority}" data-pri="${g.priority}" onclick="cyclePri(this)">${g.priority}</span>
+    </div>`).join('');
+}
+function addGoal(){
+  const l=document.getElementById('goalsList'),n=l.children.length+1;
+  l.insertAdjacentHTML('beforeend',`<div class="goal-row"><div class="g-chk" onclick="this.classList.toggle('done');this.closest('.goal-row').classList.toggle('completed');markDirty()"></div><input value="" placeholder="Goal ${n}..." oninput="markDirty()"><span class="priority-tag priority-medium" data-pri="medium" onclick="cyclePri(this)">medium</span></div>`);
+  markDirty();
+}
+function cyclePri(el){
+  const c=el.dataset.pri,n=PRIORITIES[(PRIORITIES.indexOf(c)+1)%3];
+  el.dataset.pri=n;el.className='priority-tag priority-'+n;el.textContent=n;markDirty();
 }
 
-function getPhaseClass(phase) {
-  const num = phase.replace(/[^0-9]/g, '');
-  return `phase-${num}`;
-}
-
-function getPhaseNum(phase) {
-  return phase.replace(/[^0-9]/g, '');
-}
-
-function getStreakDays() {
-  let streak = 0;
-  const today = new Date(); today.setHours(0,0,0,0);
-  for (let d = new Date(today); ; d.setDate(d.getDate() - 1)) {
-    let foundDay = false;
-    for (const week of PLANNER_DATA.weeks) {
-      for (const day of week.days) {
-        const dayDate = new Date(day.date); dayDate.setHours(0,0,0,0);
-        if (dayDate.getTime() === d.getTime()) {
-          foundDay = true;
-          const prog = getDayProgress(week.id, day.num);
-          if (prog.done === 0) return streak;
-          streak++;
-        }
-      }
-    }
-    if (!foundDay) {
-      if (streak === 0) continue;
-      return streak;
-    }
-  }
-}
-
-function getCompletedDays() {
-  let count = 0;
-  PLANNER_DATA.weeks.forEach(week => {
-    week.days.forEach(day => {
-      const prog = getDayProgress(week.id, day.num);
-      if (prog.done === 3) count++;
-    });
-  });
-  return count;
-}
-
-// Render
-function render() {
-  renderCountdown();
-  renderStats();
-  renderProgress();
-  if (currentWeek) {
-    renderWeekDetail(currentWeek);
-  } else {
-    renderDashboard();
-  }
-}
-
-function renderCountdown() {
-  const now = new Date();
-  const diff = Math.ceil((EXAM_DATE - now) / (1000*60*60*24));
-  document.getElementById('daysLeft').textContent = diff > 0 ? diff : 0;
-}
-
-function renderStats() {
-  const total = getTotalProgress();
-  const completedDays = getCompletedDays();
-  const curWeek = getCurrentWeekId();
-  const streak = getStreakDays();
-  const weeksPassed = curWeek ? curWeek - 1 : 0;
-  const weeksCompleted = PLANNER_DATA.weeks.filter(w => getWeekProgress(w.id).pct === 100).length;
-
-  document.getElementById('statsBar').innerHTML = `
-    <div class="stat-card stat-green"><div class="stat-value">${total.done}</div><div class="stat-label">Tasks Done</div></div>
-    <div class="stat-card stat-blue"><div class="stat-value">${completedDays}</div><div class="stat-label">Full Days</div></div>
-    <div class="stat-card stat-purple"><div class="stat-value">${weeksCompleted}/22</div><div class="stat-label">Weeks Done</div></div>
-    <div class="stat-card stat-orange"><div class="stat-value">${streak}</div><div class="stat-label">Day Streak</div></div>
-    <div class="stat-card stat-red"><div class="stat-value">${curWeek || '—'}</div><div class="stat-label">Current Week</div></div>
-  `;
-}
-
-function renderProgress() {
-  const total = getTotalProgress();
-  const bar = document.getElementById('mainProgress');
-  bar.style.width = total.pct + '%';
-  bar.setAttribute('data-pct', total.pct + '%');
-  document.getElementById('progressText').textContent = `${total.done} / ${total.total} tasks`;
-}
-
-function renderDashboard() {
-  document.getElementById('dashboardView').style.display = 'block';
-  document.getElementById('weekDetail').classList.remove('active');
-
-  const curWeek = getCurrentWeekId();
-  const grid = document.getElementById('dashboardGrid');
-  grid.innerHTML = PLANNER_DATA.weeks.map(week => {
-    const prog = getWeekProgress(week.id);
-    const phaseNum = getPhaseNum(week.phase);
-    const isCurrent = week.id === curWeek;
-    return `
-      <div class="week-card ${isCurrent ? 'current-week' : ''} fade-in" onclick="openWeek(${week.id})">
-        <div class="wk-header">
-          <span class="wk-name">${week.week}</span>
-          <span class="wk-phase phase-${phaseNum}">${week.phase}</span>
-        </div>
-        <div class="wk-dates">${week.dates}</div>
-        <div class="wk-focus">${week.focus}</div>
-        <div class="wk-progress"><div class="wk-progress-fill" style="width:${prog.pct}%"></div></div>
-        <div class="wk-stats">
-          <span>${prog.done}/${prog.total} tasks</span>
-          <span>${prog.pct}%</span>
-        </div>
+function renderBlocks(){
+  const d=dd(),now=new Date(),isToday=currentDate===fmt(now),curMin=now.getHours()*60+now.getMinutes();
+  document.getElementById('blockList').innerHTML=BLOCKS.map(b=>{
+    if(b.brk)return `<div class="study-block is-break"><div class="sb-header"><span class="sb-time">${b.time}</span><span class="sb-title">${b.label}</span><span style="font-size:0.68rem;color:var(--dim)">${b.dur}</span></div></div>`;
+    const bd=d.blocks[b.id]||{};
+    const tp=b.time.replace(/\s/g,'');
+    const sh=parseInt(tp),sm=parseInt(tp.split(':')[1])||0;
+    const ep=tp.split('–')[1]||tp.split('-')[1]||'';
+    const eh=parseInt(ep),em=parseInt(ep.split(':')[1])||0;
+    const sMin=(sh>12?sh:sh)*60+sm,eMin=(eh===0?24:eh>12?eh:eh+(eh<7?12:0))*60+em;
+    const isActive=isToday&&curMin>=sMin&&curMin<eMin;
+    const isDone=bd.status==='Completed';
+    const sc=bd.status==='Completed'?'status-completed':bd.status==='In Progress'?'status-in-progress':'status-not-started';
+    const title=bd.subject||b.label;
+    return `<div class="study-block ${isActive?'is-active':''} ${isDone?'is-done':''} ${expandedBlock===b.id?'expanded':''}" id="block_${b.id}">
+      <div class="sb-header" onclick="expandedBlock=expandedBlock==='${b.id}'?null:'${b.id}';render()">
+        <span class="sb-time">${b.time}</span>
+        <span class="sb-title">${esc(title)}${bd.topic?' — '+esc(bd.topic):''}</span>
+        <select class="sb-status-btn ${sc}" onclick="event.stopPropagation()" onchange="dd().blocks['${b.id}']=dd().blocks['${b.id}']||{};dd().blocks['${b.id}'].status=this.value;markDirty();render()">
+          ${STATUSES.map(s=>`<option ${bd.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
       </div>
-    `;
+      <div class="sb-body">
+        <div class="sb-fields">
+          <div class="sb-field"><label>Subject</label><select class="sb-subj" onchange="markDirty()"><option value="">Select...</option>${SUBJ_NAMES.map(s=>`<option ${bd.subject===s?'selected':''}>${s}</option>`).join('')}</select></div>
+          <div class="sb-field"><label>Topic</label><input class="sb-topic" value="${esc(bd.topic||'')}" placeholder="What are you studying?" oninput="markDirty()"></div>
+          <div class="sb-field"><label>Type</label><select class="sb-type" onchange="markDirty()">${TYPES.map(t=>`<option ${bd.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+          <div class="sb-field"><label>Status</label><select class="sb-stat" onchange="markDirty()">${STATUSES.map(s=>`<option ${bd.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+        </div>
+        <div class="sb-dur">${b.dur}</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function openWeek(weekId) {
-  currentWeek = weekId;
-  document.getElementById('dashboardView').style.display = 'none';
-  document.getElementById('weekDetail').classList.add('active');
-  renderWeekDetail(weekId);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function renderProd(){
+  const d=dd();
+  let rD=0,rT=ROUTINES.length;ROUTINES.forEach(r=>{if(d.routines[r.id])rD++});
+  let gD=0,gT=0;(d.goals||[]).forEach(g=>{if(g.text){gT++;if(g.done)gD++}});
+  let bD=0,bT=STUDY_BLOCKS.length,hrs=0;
+  STUDY_BLOCKS.forEach(b=>{const s=(d.blocks[b.id]||{}).status;if(s==='Completed'){bD++;hrs+=b.mins/60}else if(s==='In Progress')hrs+=b.mins/120});
+  const total=rT+gT+bT,done=rD+gD+bD,pct=total?Math.round(done/total*100):0;
+  const C=2*Math.PI*42,off=C-(pct/100)*C;
+  const col=pct>=80?'var(--green2)':pct>=50?'var(--orange)':'var(--red)';
+  document.getElementById('prodScore').innerHTML=`
+    <div class="prod-ring"><svg width="100" height="100" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fg" cx="50" cy="50" r="42" stroke="${col}" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg><div class="ring-text" style="color:${col}">${pct}%</div></div>
+    <div class="prod-details">
+      <div class="prod-detail"><div class="pd-val" style="color:var(--green2)">${rD}/${rT}</div><div class="pd-lbl">Routine</div></div>
+      <div class="prod-detail"><div class="pd-val" style="color:var(--blue)">${gD}/${gT||'—'}</div><div class="pd-lbl">Goals</div></div>
+      <div class="prod-detail"><div class="pd-val" style="color:var(--accent2)">${bD}/${bT}</div><div class="pd-lbl">Sessions</div></div>
+      <div class="prod-detail"><div class="pd-val" style="color:var(--orange)">${hrs.toFixed(1)}</div><div class="pd-lbl">Study Hrs</div></div>
+    </div>`;
 }
 
-function goBack() {
-  currentWeek = null;
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function renderReflection(){
+  const r=dd().reflection||{};
+  document.getElementById('reflectionCard').innerHTML=`<h3>End of Day Reflection</h3>
+    <div class="refl-field"><label>What went well?</label><textarea id="r_well" placeholder="Wins today..." oninput="markDirty()">${esc(r.well||'')}</textarea></div>
+    <div class="refl-field"><label>What didn't go well?</label><textarea id="r_didnt" placeholder="Struggles..." oninput="markDirty()">${esc(r.didnt||'')}</textarea></div>
+    <div class="refl-field"><label>What can I improve?</label><textarea id="r_improve" placeholder="Action items..." oninput="markDirty()">${esc(r.improve||'')}</textarea></div>
+    <div class="refl-field"><label>Tomorrow's top focus</label><textarea id="r_tomorrow" placeholder="Priority for tomorrow..." oninput="markDirty()">${esc(r.tomorrow||'')}</textarea></div>`;
 }
 
-function renderWeekDetail(weekId) {
-  const week = PLANNER_DATA.weeks[weekId - 1];
-  const todayStr = getTodayStr();
-  const prog = getWeekProgress(weekId);
-  const assessment = state.assessments[weekId] || {};
-
-  const detail = document.getElementById('weekDetail');
-  detail.innerHTML = `
-    <div class="week-detail-header fade-in">
-      <div>
-        <button class="back-btn" onclick="goBack()">← Dashboard</button>
-        <h2 style="margin-top:8px">${week.title || week.week}</h2>
+function renderSubjects(){
+  const s=sd();
+  document.getElementById('subjectCards').innerHTML=SUBJECTS.map(sub=>{
+    const d=s[sub.id]||{done:0,revised:0,practiced:0};
+    const pct=sub.total?Math.round(d.done/sub.total*100):0;
+    return `<div class="subj-card" id="subj_${sub.id}">
+      <div class="subj-header"><span class="subj-name" style="color:${sub.color}">${sub.name}</span><span class="subj-pct" style="color:${sub.color}">${pct}%</span></div>
+      <div class="subj-bar"><div class="subj-bar-fill" style="width:${pct}%;background:${sub.color}"></div></div>
+      <div class="subj-details">
+        <div class="subj-stat"><div class="ss-val">${d.done}/${sub.total}</div><div class="ss-lbl">${sub.unit} Done</div></div>
+        <div class="subj-stat"><div class="ss-val">${d.revised}</div><div class="ss-lbl">Revised</div></div>
+        <div class="subj-stat"><div class="ss-val">${d.practiced}</div><div class="ss-lbl">Practiced</div></div>
       </div>
-      <div class="week-nav">
-        <button onclick="openWeek(${weekId - 1})" ${weekId <= 1 ? 'disabled' : ''}>← Week ${weekId - 1}</button>
-        <button onclick="openWeek(${weekId + 1})" ${weekId >= 22 ? 'disabled' : ''}>Week ${weekId + 1} →</button>
+      <div class="subj-edit-row">
+        <div><div class="se-lbl">${sub.unit} Done</div><input class="se-done" type="number" min="0" max="${sub.total}" value="${d.done}" oninput="markDirty()"></div>
+        <div><div class="se-lbl">Revised</div><input class="se-rev" type="number" min="0" value="${d.revised}" oninput="markDirty()"></div>
+        <div><div class="se-lbl">Practiced</div><input class="se-prac" type="number" min="0" value="${d.practiced}" oninput="markDirty()"></div>
       </div>
-    </div>
-
-    <div style="margin-bottom:16px">
-      <div class="progress-bar-outer" style="height:10px">
-        <div class="progress-bar-inner" style="width:${prog.pct}%;height:100%" data-pct="${prog.pct}%"></div>
-      </div>
-      <div class="progress-label"><span>Week Progress</span><span>${prog.done}/${prog.total} tasks (${prog.pct}%)</span></div>
-    </div>
-
-    <div id="dayCards">
-      ${week.days.map(day => renderDayCard(weekId, day, todayStr)).join('')}
-    </div>
-
-    <div class="assessment-section fade-in">
-      <h3>Weekly Self-Assessment (Week ${weekId})</h3>
-      <div class="assessment-field">
-        <label>Total hours studied this week (target: 60+)</label>
-        <input type="number" id="assess_hours" value="${assessment.hours || ''}" placeholder="e.g. 55">
-      </div>
-      <div class="assessment-field">
-        <label>Sunday test subject & score</label>
-        <input type="text" id="assess_test" value="${assessment.test || ''}" placeholder="e.g. Adv Acc — 62/100">
-      </div>
-      <div class="assessment-field">
-        <label>Biggest win this week</label>
-        <textarea id="assess_win" placeholder="What went well?">${assessment.win || ''}</textarea>
-      </div>
-      <div class="assessment-field">
-        <label>Biggest struggle</label>
-        <textarea id="assess_struggle" placeholder="What was hard?">${assessment.struggle || ''}</textarea>
-      </div>
-      <div class="assessment-field">
-        <label>Subjects needing extra attention</label>
-        <input type="text" id="assess_attention" value="${assessment.attention || ''}" placeholder="e.g. Costing, Law">
-      </div>
-      <div class="assessment-field">
-        <label>On track?</label>
-        <select id="assess_track">
-          <option value="">Select...</option>
-          <option value="Ahead" ${assessment.track === 'Ahead' ? 'selected' : ''}>Ahead</option>
-          <option value="Yes" ${assessment.track === 'Yes' ? 'selected' : ''}>Yes — On Track</option>
-          <option value="Behind" ${assessment.track === 'Behind' ? 'selected' : ''}>Behind</option>
-        </select>
-      </div>
-      <div style="display:flex;align-items:center;margin-top:8px">
-        <button class="save-btn" onclick="saveAssessment(${weekId})">Save Assessment</button>
-        <span class="saved-msg" id="savedMsg">Saved!</span>
-      </div>
-    </div>
-  `;
+    </div>`;
+  }).join('');
 }
 
-function renderDayCard(weekId, day, todayStr) {
-  const isToday = day.date.includes(todayStr.split(', ')[0]) && day.date.includes('2026');
-  const isSunday = day.day === 'Sunday';
-  const prog = getDayProgress(weekId, day.num);
-  const morningDone = isTaskDone(weekId, day.num, 'morning');
-  const practiceDone = isTaskDone(weekId, day.num, 'practice');
-  const eveningDone = isTaskDone(weekId, day.num, 'evening');
-  const allDone = prog.done === 3;
+function renderWeekly(){
+  const d=new Date(currentDate+'T12:00:00'),day=d.getDay();
+  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));
+  const today=fmt(new Date()),dn=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  let wh='';
+  for(let i=0;i<7;i++){
+    const dd2=new Date(mon);dd2.setDate(mon.getDate()+i);const k=fmt(dd2);
+    const data=db[k];let bDone=0;
+    if(data&&data.blocks)STUDY_BLOCKS.forEach(b=>{if((data.blocks[b.id]||{}).status==='Completed')bDone++});
+    const col=bDone>=5?'var(--green)':bDone>=3?'var(--orange)':bDone>0?'var(--yellow)':'var(--card3)';
+    wh+=`<div class="week-day-cell ${k===today?'today':''} ${k===currentDate?'selected':''}" onclick="if(dirty)saveAll();currentDate='${k}';document.getElementById('dateInput').value='${k}';render()">
+      <div class="wdc-day">${dn[i]}</div><div class="wdc-num">${dd2.getDate()}</div><div class="wdc-dots"><div class="wdc-dot" style="background:${col}"></div></div></div>`;
+  }
+  document.getElementById('weekOverview').innerHTML=wh;
 
-  // Determine today based on actual date comparison
-  const dayDate = new Date(day.date);
-  const now = new Date();
-  dayDate.setHours(0,0,0,0); now.setHours(0,0,0,0);
-  const isActualToday = dayDate.getTime() === now.getTime();
-  const expandDefault = isActualToday;
+  const w=wd();
+  const goals=w.goals&&w.goals.length?w.goals:[{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false}];
+  document.getElementById('weeklyGoalsList').innerHTML=goals.map((g,i)=>
+    `<div class="wg-item ${g.done?'completed':''}"><div class="wg-chk ${g.done?'done':''}" onclick="this.classList.toggle('done');this.closest('.wg-item').classList.toggle('completed');markDirty()"></div><input value="${esc(g.text)}" placeholder="Weekly goal ${i+1}..." oninput="markDirty()"></div>`).join('');
 
-  return `
-    <div class="day-card ${isActualToday ? 'today' : ''} ${allDone ? 'completed' : ''} ${isSunday ? 'sunday' : ''} ${expandDefault ? 'expanded' : ''}" id="day_${weekId}_${day.num}">
-      <div class="day-header" onclick="toggleDayExpand(${weekId}, ${day.num})">
-        <div class="day-info">
-          <div class="day-num">${day.num}</div>
-          <div class="day-name-date">
-            <div class="day-name">${day.day}${isActualToday ? ' — TODAY' : ''}</div>
-            <div class="day-date">${day.date}</div>
-          </div>
-        </div>
-        <div class="day-status">
-          <span class="day-pct">${prog.done}/3</span>
-          <div class="day-dots">
-            <div class="day-dot ${morningDone ? 'done' : ''}" title="Morning"></div>
-            <div class="day-dot ${practiceDone ? 'done' : ''}" title="Practice"></div>
-            <div class="day-dot ${eveningDone ? 'done' : ''}" title="Evening"></div>
-          </div>
-        </div>
-      </div>
-      <div class="day-body">
-        <div class="task-block ${morningDone ? 'done' : ''}">
-          <div class="task-check ${morningDone ? 'checked' : ''}" onclick="event.stopPropagation();toggleTask(${weekId},${day.num},'morning')"></div>
-          <div class="task-content">
-            <div class="task-label morning">Morning — 7:15–11:30</div>
-            <div class="task-text">${day.morning}</div>
-          </div>
-        </div>
-        <div class="task-block ${practiceDone ? 'done' : ''}">
-          <div class="task-check ${practiceDone ? 'checked' : ''}" onclick="event.stopPropagation();toggleTask(${weekId},${day.num},'practice')"></div>
-          <div class="task-content">
-            <div class="task-label practice">Practice — 12:00–2:00</div>
-            <div class="task-text">${day.practice}</div>
-          </div>
-        </div>
-        <div class="task-block ${eveningDone ? 'done' : ''}">
-          <div class="task-check ${eveningDone ? 'checked' : ''}" onclick="event.stopPropagation();toggleTask(${weekId},${day.num},'evening')"></div>
-          <div class="task-content">
-            <div class="task-label evening">Evening — 3:00–7:30</div>
-            <div class="task-text">${day.evening}</div>
-          </div>
-        </div>
-        ${day.notes ? `<div class="day-notes">${day.notes}</div>` : ''}
-        ${isSunday ? `
-        <div class="sunday-protocol">
-          <h4>SUNDAY PROTOCOL</h4>
-          <p>7:00–7:30 Setup | 7:30–10:30 Subject Test (3 hrs strict) | 10:30–11:00 Break | 11:00–1:00 Self-evaluation | 1:00–2:00 Lunch | 2:00–4:00 Weak area study | 4:00–5:00 Error Log + planning | 5:00+ REST</p>
-        </div>` : ''}
-      </div>
-    </div>
-  `;
+  const mocks=w.mocks||{};
+  document.getElementById('mockSlots').innerHTML=['Saturday','Sunday'].map(day=>
+    `<div class="mock-slot"><div class="ms-day">${day} Mock</div><input data-day="${day}" value="${esc(mocks[day]||'')}" placeholder="Subject & score..." oninput="markDirty()"></div>`).join('');
+
+  document.getElementById('weeklyBuffer').value=w.buffer||'';
+  document.getElementById('weeklyRevision').value=w.revision||'';
+}
+function addWeeklyGoal(){
+  const l=document.getElementById('weeklyGoalsList'),n=l.children.length+1;
+  l.insertAdjacentHTML('beforeend',`<div class="wg-item"><div class="wg-chk" onclick="this.classList.toggle('done');this.closest('.wg-item').classList.toggle('completed');markDirty()"></div><input value="" placeholder="Weekly goal ${n}..." oninput="markDirty()"></div>`);
+  markDirty();
 }
 
-function toggleDayExpand(weekId, dayNum) {
-  const card = document.getElementById(`day_${weekId}_${dayNum}`);
-  card.classList.toggle('expanded');
+function renderAnalytics(){
+  const s=sd();let tDone=0,tAll=0,studyDays=0,totalBlocks=0;
+  SUBJECTS.forEach(sub=>{const d=s[sub.id]||{done:0};tDone+=d.done;tAll+=sub.total});
+  let streak=0;const today=new Date();today.setHours(0,0,0,0);
+  for(let i=0;i<365;i++){
+    const d=new Date(today);d.setDate(d.getDate()-i);const k=fmt(d),data=db[k];
+    if(!data||!data.blocks){if(i===0)continue;break}
+    let bd=0;STUDY_BLOCKS.forEach(b=>{if((data.blocks[b.id]||{}).status==='Completed')bd++});
+    if(bd===0){if(i===0)continue;break}
+    streak++;
+  }
+  document.getElementById('anaStreak').textContent=streak;
+  Object.keys(db).forEach(k=>{
+    if(k.startsWith('w_')||k.startsWith('_'))return;
+    const data=db[k];if(!data||!data.blocks)return;
+    let bd=0;STUDY_BLOCKS.forEach(b=>{if((data.blocks[b.id]||{}).status==='Completed')bd++});
+    if(bd>0){studyDays++;totalBlocks+=bd}
+  });
+  const avg=studyDays?((totalBlocks*1.5)/studyDays).toFixed(1):'0';
+  const sylPct=tAll?Math.round(tDone/tAll*100):0;
+  document.getElementById('anaGrid').innerHTML=`
+    <div class="ana-card"><div class="a-val" style="color:var(--green2)">${studyDays}</div><div class="a-lbl">Study Days</div></div>
+    <div class="ana-card"><div class="a-val" style="color:var(--blue)">${avg}</div><div class="a-lbl">Avg Hrs/Day</div></div>
+    <div class="ana-card"><div class="a-val" style="color:var(--accent2)">${totalBlocks}</div><div class="a-lbl">Sessions Done</div></div>
+    <div class="ana-card"><div class="a-val" style="color:var(--orange)">${sylPct}%</div><div class="a-lbl">Syllabus Done</div></div>`;
+  document.getElementById('syllabusRows').innerHTML=SUBJECTS.map(sub=>{
+    const d=s[sub.id]||{done:0};const pct=sub.total?Math.round(d.done/sub.total*100):0;
+    return `<div class="syl-row"><span class="syl-name" style="color:${sub.color}">${sub.name}</span><div class="syl-bar"><div class="syl-bar-fill" style="width:${pct}%;background:${sub.color}"></div></div><span class="syl-pct" style="color:${sub.color}">${pct}%</span></div>`;
+  }).join('');
+  let hm='';const ht=new Date();ht.setHours(0,0,0,0);
+  const st=new Date(ht);st.setDate(ht.getDate()-27);
+  const dw=st.getDay(),ms=new Date(st);ms.setDate(st.getDate()-(dw===0?6:dw-1));
+  for(let i=0;i<28;i++){
+    const d=new Date(ms);d.setDate(ms.getDate()+i);const k=fmt(d),data=db[k];
+    let bd=0;if(data&&data.blocks)STUDY_BLOCKS.forEach(b=>{if((data.blocks[b.id]||{}).status==='Completed')bd++});
+    const lv=bd>=5?'l4':bd>=3?'l3':bd>=1?'l2':bd>0?'l1':'';
+    hm+=`<div class="hm-cell ${d>ht?'':lv}" title="${k}: ${bd} sessions"></div>`;
+  }
+  document.getElementById('heatmapGrid').innerHTML=hm;
 }
 
-function saveAssessment(weekId) {
-  state.assessments[weekId] = {
-    hours: document.getElementById('assess_hours').value,
-    test: document.getElementById('assess_test').value,
-    win: document.getElementById('assess_win').value,
-    struggle: document.getElementById('assess_struggle').value,
-    attention: document.getElementById('assess_attention').value,
-    track: document.getElementById('assess_track').value,
-  };
-  saveState();
-  const msg = document.getElementById('savedMsg');
-  msg.classList.add('show');
-  setTimeout(() => msg.classList.remove('show'), 2000);
-}
-
-// Init
-render();
-
-// Auto-open current week if exists
-const curWeek = getCurrentWeekId();
-if (curWeek) openWeek(curWeek);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&dirty)saveAll()});
+window.addEventListener('beforeunload',()=>{if(dirty)saveAll()});
+init();
 </script>
 </body>
 </html>
