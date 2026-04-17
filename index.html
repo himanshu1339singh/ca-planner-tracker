@@ -353,7 +353,7 @@ const TYPES=['Lecture','Practice','Revision','Mock Test','Reading'];
 const STATUSES=['Not Started','In Progress','Completed'];
 const PRI=['high','medium','low'];
 
-let db={},curDate='',dirty=false,expBlock=null;
+let db={},curDate='',dirty=false,expBlock=null,autoSaveTimer=null;
 function ld(){try{return JSON.parse(localStorage.getItem(SK))||{}}catch(e){return{}}}
 function sv(){localStorage.setItem(SK,JSON.stringify(db))}
 function fmt(d){return d.toISOString().split('T')[0]}
@@ -362,7 +362,8 @@ function wk(){const d=new Date(curDate+'T12:00:00'),dy=d.getDay(),m=new Date(d);
 function wd(){const k=wk();if(!db[k])db[k]={goals:[],mocks:{},buffer:'',revision:''};return db[k]}
 function sd(){if(!db._subj){db._subj={};SUBJECTS.forEach(s=>{db._subj[s.id]={done:0,revised:0,practiced:0}})}return db._subj}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function markDirty(){dirty=true;document.getElementById('saveBtn').classList.add('visible')}
+function markDirty(){dirty=true;document.getElementById('saveBtn').classList.add('visible');if(autoSaveTimer)clearTimeout(autoSaveTimer);autoSaveTimer=setTimeout(autoSave,600)}
+function autoSave(){if(!dirty)return;collectDaily();collectWeekly();collectSubjects();sv();dirty=false;document.getElementById('saveBtn').classList.remove('visible');const t=document.getElementById('saveToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1200)}
 
 function collectDaily(){
   const d=dd();d.goals=[];
@@ -397,6 +398,7 @@ function collectSubjects(){
   });
 }
 function saveAll(){
+  if(autoSaveTimer){clearTimeout(autoSaveTimer);autoSaveTimer=null}
   collectDaily();collectWeekly();collectSubjects();sv();dirty=false;
   document.getElementById('saveBtn').classList.remove('visible');
   const t=document.getElementById('saveToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);render();
