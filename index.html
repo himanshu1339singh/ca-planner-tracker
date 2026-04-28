@@ -34,8 +34,9 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
 .cnt-item .cnt-lbl{font-size:0.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.8px}
 
 /* ===== NAV ===== */
-.nav{display:flex;gap:2px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0}
-.nav-btn{padding:10px 20px;border:none;background:transparent;color:var(--dim);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav{display:flex;gap:2px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{padding:10px 20px;border:none;background:transparent;color:var(--dim);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0}
 .nav-btn.active{color:var(--accent2);border-bottom-color:var(--accent2)}
 .nav-btn:not(.active):hover{color:var(--text2)}
 
@@ -205,6 +206,56 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
 .hm-c{aspect-ratio:1;border-radius:3px;background:var(--card2)}
 .hm-c.l1{background:rgba(60,201,160,0.12)}.hm-c.l2{background:rgba(60,201,160,0.25)}.hm-c.l3{background:rgba(60,201,160,0.45)}.hm-c.l4{background:rgba(60,201,160,0.7)}
 
+/* ===== JOURNEY ===== */
+.jr-banner{background:linear-gradient(135deg,#3a2f1a 0%,#5a4520 100%);border:1px solid rgba(212,160,82,0.35);border-radius:12px;padding:20px;margin-bottom:20px;text-align:center}
+.jr-banner .jr-goal-lbl{font-size:0.55rem;color:rgba(240,200,120,0.65);text-transform:uppercase;letter-spacing:2.5px;font-weight:700;margin-bottom:6px}
+.jr-banner .jr-goal{font-size:1.15rem;font-weight:800;color:#f0c878;letter-spacing:-0.3px;line-height:1.3}
+.jr-banner .jr-sub{font-size:0.72rem;color:rgba(240,200,120,0.6);margin-top:6px;font-weight:600;letter-spacing:0.3px}
+.jr-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.jr-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 6px;text-align:center}
+.jr-stat .jr-val{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px}
+.jr-stat .jr-lbl{font-size:0.5rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
+.jr-section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.jr-section h3{font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);font-weight:700;margin-bottom:14px}
+.jr-phase-list{display:flex;flex-direction:column;gap:8px}
+.jr-phase{display:flex;align-items:center;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;transition:all 0.2s}
+.jr-phase.complete{background:var(--green-bg);border-color:var(--green-border)}
+.jr-phase.active{background:var(--amber-bg);border-color:var(--amber-border)}
+.jr-phase .jr-pn{font-size:1.4rem;flex-shrink:0;width:36px;text-align:center}
+.jr-phase .jr-pinfo{flex:1;min-width:0}
+.jr-phase .jr-pname{font-size:0.85rem;font-weight:700;color:var(--text)}
+.jr-phase .jr-pdesc{font-size:0.66rem;color:var(--dim);margin-top:2px}
+.jr-phase .jr-pwk{font-size:0.52rem;color:var(--dim2);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;margin-top:3px}
+.jr-phase .jr-pst{font-size:0.62rem;font-weight:700;flex-shrink:0;padding:4px 10px;border-radius:12px;background:var(--card3);color:var(--dim);text-transform:uppercase;letter-spacing:0.5px}
+.jr-phase.complete .jr-pst{background:var(--green);color:#0c0c11}
+.jr-phase.active .jr-pst{background:var(--amber);color:#0c0c11}
+.jr-weeks-wrap{margin-top:4px}
+.jr-weeks{display:grid;grid-template-columns:repeat(19,1fr);gap:4px}
+.jr-wk{aspect-ratio:1;border-radius:4px;background:var(--card3);display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:var(--dim2);transition:all 0.2s}
+.jr-wk.complete{background:var(--green);color:#0c0c11}
+.jr-wk.missed{background:rgba(208,96,112,0.35);color:var(--text2)}
+.jr-wk.active{background:var(--amber);color:#0c0c11;box-shadow:0 0 0 2px rgba(212,160,82,0.4)}
+.jr-weeks-key{display:flex;gap:14px;justify-content:center;margin-top:12px;font-size:0.55rem;color:var(--dim);flex-wrap:wrap}
+.jr-key-dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.jr-list{display:flex;flex-direction:column;gap:8px}
+.jr-li{display:flex;gap:10px;padding:10px 12px;background:var(--card2);border-radius:6px;align-items:flex-start}
+.jr-li-num{flex-shrink:0;width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:800}
+.jr-li-text{font-size:0.76rem;line-height:1.5;color:var(--text);flex:1}
+.jr-zones{display:flex;flex-direction:column;gap:6px}
+.jr-zone{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:6px;border:1px solid}
+.jr-zone-g{background:rgba(60,201,160,0.08);border-color:rgba(60,201,160,0.25)}
+.jr-zone-y{background:rgba(212,160,82,0.08);border-color:rgba(212,160,82,0.25)}
+.jr-zone-o{background:rgba(232,140,80,0.08);border-color:rgba(232,140,80,0.25)}
+.jr-zone-r{background:rgba(208,96,112,0.08);border-color:rgba(208,96,112,0.25)}
+.jr-z-icon{font-size:1rem;flex-shrink:0;line-height:1.4}
+.jr-z-text{flex:1;font-size:0.72rem;color:var(--text);line-height:1.5}
+.jr-z-text strong{font-weight:800}
+.jr-mantra{padding:11px 14px;background:var(--card2);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;margin-bottom:8px;font-size:0.76rem;color:var(--text);line-height:1.55;font-style:italic}
+.jr-mantra:last-child{margin-bottom:0}
+.jr-affirm{background:linear-gradient(135deg,#3a2f1a 0%,#5a4520 100%);border:1px solid rgba(212,160,82,0.35);border-radius:12px;padding:22px 20px;text-align:center}
+.jr-affirm .jr-aft{font-size:0.95rem;font-weight:700;color:#f0c878;line-height:1.5;letter-spacing:-0.2px}
+.jr-affirm .jr-asub{font-size:0.7rem;color:rgba(240,200,120,0.6);margin-top:10px;font-weight:600;letter-spacing:0.3px}
+
 /* ===== SAVE ===== */
 .save-btn{position:fixed;bottom:20px;right:20px;padding:10px 22px;background:var(--accent);border:none;border-radius:8px;color:#fff;font-weight:700;font-size:0.78rem;cursor:pointer;box-shadow:0 4px 16px rgba(91,124,247,0.3);transition:all 0.15s;z-index:100;display:none;letter-spacing:0.3px}
 .save-btn.visible{display:block;animation:fadeIn 0.2s ease}
@@ -218,7 +269,7 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
 .header .title{font-size:1rem}
 .countdown-row{gap:14px}
 .cnt-item .cnt-val{font-size:1.2rem}
-.nav-btn{padding:9px 12px;font-size:0.68rem}
+.nav-btn{padding:9px 14px;font-size:0.7rem}
 .routine-bar{gap:5px}
 .routine-chip{padding:6px 10px}
 .r-info{font-size:0.68rem}
@@ -233,6 +284,13 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
 .blocks-table{font-size:0.72rem}
 .blocks-table th,.blocks-table td{padding:8px 8px}
 .bt-time{min-width:65px;font-size:0.65rem}
+.jr-stats{grid-template-columns:repeat(2,1fr)}
+.jr-weeks{grid-template-columns:repeat(10,1fr);gap:3px}
+.jr-phase{padding:10px}
+.jr-phase .jr-pn{font-size:1.2rem;width:28px}
+.jr-phase .jr-pname{font-size:0.78rem}
+.jr-phase .jr-pst{font-size:0.55rem;padding:3px 7px}
+.jr-affirm .jr-aft{font-size:0.85rem}
 }
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -259,6 +317,7 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
     <button class="nav-btn active" data-tab="daily" onclick="switchTab('daily')">Daily</button>
     <button class="nav-btn" data-tab="subjects" onclick="switchTab('subjects')">Subjects</button>
     <button class="nav-btn" data-tab="weekly" onclick="switchTab('weekly')">Weekly</button>
+    <button class="nav-btn" data-tab="journey" onclick="switchTab('journey')">Journey</button>
     <button class="nav-btn" data-tab="analytics" onclick="switchTab('analytics')">Analytics</button>
   </nav>
 
@@ -306,6 +365,54 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
     </div>
   </div>
 
+  <!-- JOURNEY -->
+  <div class="panel" id="panel-journey">
+    <div class="jr-banner">
+      <div class="jr-goal-lbl">★ The Goal ★</div>
+      <div class="jr-goal">AIR — Top 50 India</div>
+      <div class="jr-sub">CA Inter · Both Groups · September 2026</div>
+    </div>
+    <div class="jr-stats" id="jrStats"></div>
+    <div class="jr-section"><h3>The 6-Phase Climb</h3><div class="jr-phase-list" id="jrPhases"></div></div>
+    <div class="jr-section"><h3>19 Weeks · The Path</h3>
+      <div class="jr-weeks-wrap"><div class="jr-weeks" id="jrWeeks"></div></div>
+      <div class="jr-weeks-key">
+        <span><span class="jr-key-dot" style="background:var(--green)"></span>complete</span>
+        <span><span class="jr-key-dot" style="background:var(--amber)"></span>active</span>
+        <span><span class="jr-key-dot" style="background:rgba(208,96,112,0.4)"></span>missed</span>
+        <span><span class="jr-key-dot" style="background:var(--card3)"></span>pending</span>
+      </div>
+    </div>
+    <div class="jr-section"><h3>The 6 Non-Negotiables</h3>
+      <div class="jr-list">
+        <div class="jr-li"><div class="jr-li-num">1</div><div class="jr-li-text"><strong>Show up at 7:30 AM.</strong> Every. Single. Day. The chair doesn't care how you feel.</div></div>
+        <div class="jr-li"><div class="jr-li-num">2</div><div class="jr-li-text"><strong>Practice daily.</strong> Theory without practice = wasted time. Solve, don't just read.</div></div>
+        <div class="jr-li"><div class="jr-li-num">3</div><div class="jr-li-text"><strong>Revise on cycles.</strong> 1-day, 3-day, 7-day. Skip a cycle, lose the topic.</div></div>
+        <div class="jr-li"><div class="jr-li-num">4</div><div class="jr-li-text"><strong>Mock test every Sunday</strong> from Phase 4 onwards. Mocks build the exam reflex.</div></div>
+        <div class="jr-li"><div class="jr-li-num">5</div><div class="jr-li-text"><strong>Sleep 7+ hours.</strong> The brain does the consolidation while you sleep — you can't shortcut this.</div></div>
+        <div class="jr-li"><div class="jr-li-num">6</div><div class="jr-li-text"><strong>Track every day in this app.</strong> What gets measured gets done. Honest tracking &gt; perfect tracking.</div></div>
+      </div>
+    </div>
+    <div class="jr-section"><h3>AIR Probability — Where Will You Land?</h3>
+      <div class="jr-zones">
+        <div class="jr-zone jr-zone-g"><span class="jr-z-icon">🟢</span><span class="jr-z-text"><strong>Top 50 reach</strong> — All of Phase 6 done · 5+ mocks ≥80% · revision cycles intact.</span></div>
+        <div class="jr-zone jr-zone-y"><span class="jr-z-icon">🟡</span><span class="jr-z-text"><strong>Top 200 likely</strong> — Phase 6 done · 3–4 mocks ≥75% · most revision intact.</span></div>
+        <div class="jr-zone jr-zone-o"><span class="jr-z-icon">🟠</span><span class="jr-z-text"><strong>Both groups pass, AIR uncertain</strong> — Phase 6 partial · weak mock scores · syllabus 80%+.</span></div>
+        <div class="jr-zone jr-zone-r"><span class="jr-z-icon">🔴</span><span class="jr-z-text"><strong>Risk zone</strong> — Syllabus &lt;70% by Aug 1 · few mocks · one group only attempt likely.</span></div>
+      </div>
+    </div>
+    <div class="jr-section"><h3>When You Want to Quit</h3>
+      <div class="jr-mantra">"Tired? The exam doesn't care. <strong>Four hours from now you'll be glad you didn't quit.</strong>"</div>
+      <div class="jr-mantra">"Top 50 isn't given. It's earned <strong>by the version of you who showed up when it was hard.</strong>"</div>
+      <div class="jr-mantra">"<strong>Your future self is watching.</strong> Don't let them down."</div>
+      <div class="jr-mantra">"One bad day ≠ failed attempt. One bad week = course correction. One bad month = quit. <strong>Today is just a day.</strong>"</div>
+    </div>
+    <div class="jr-affirm">
+      <div class="jr-aft">"Tomorrow morning, 7:15 AM. That's the only thing that matters right now."</div>
+      <div class="jr-asub">— The Climb Continues</div>
+    </div>
+  </div>
+
   <!-- ANALYTICS -->
   <div class="panel" id="panel-analytics">
     <div class="streak-banner"><div class="sb-val" id="anaStreak">0</div><div class="sb-lbl">Day Streak</div></div>
@@ -319,6 +426,15 @@ body{font-family:'Inter',-apple-system,'SF Pro Text','Segoe UI',system-ui,sans-s
 
 <script>
 const EXAM=new Date('2026-09-08'),SK='ca_daily_planner_v3';
+const JOURNEY_START=new Date('2026-04-29T00:00:00');
+const PHASES=[
+  {n:1,emoji:'🌱',label:'Foundation',weeks:[1,2],desc:'Set rhythm. Build the muscle. Show up.'},
+  {n:2,emoji:'⚙️',label:'Core Build',weeks:[3,4,5,6,7,8],desc:'96 lectures. The heart of the syllabus.'},
+  {n:3,emoji:'🔗',label:'Transition',weeks:[9,10,11,12],desc:'Connect topics. Practice intensifies.'},
+  {n:4,emoji:'🧱',label:'Consolidation',weeks:[13],desc:'Lock it in. No new ground.'},
+  {n:5,emoji:'🎯',label:'Mock Prep',weeks:[14],desc:'Sharpen the exam reflex.'},
+  {n:6,emoji:'🏔️',label:'Final Sprint',weeks:[15,16,17,18,19],desc:'Mock tests + revision. Race mode.'}
+];
 const SUBJECTS=[
   {id:'advacc',name:'Adv. Accounting',color:'#7b9aff',total:105,unit:'lectures'},
   {id:'law',name:'Corp. & Other Laws',color:'#d4a052',total:18,unit:'hrs'},
@@ -431,7 +547,49 @@ function render(){
   document.getElementById('cntDays').textContent=Math.max(0,diff);
   document.getElementById('cntWeeks').textContent=Math.max(0,Math.floor(diff/7));
   document.getElementById('cntHours').textContent=Math.max(0,Math.round(diff*9.5));
-  rDayLabel();rRoutines();rGoals();rBlocks();rProd();rRefl();rSubjects();rWeekly();rAnalytics();
+  rDayLabel();rRoutines();rGoals();rBlocks();rProd();rRefl();rSubjects();rWeekly();rJourney();rAnalytics();
+}
+
+function jrWkStatus(weekNum){
+  const start=new Date(JOURNEY_START);start.setDate(start.getDate()+(weekNum-1)*7);
+  const end=new Date(start);end.setDate(start.getDate()+6);
+  const now=new Date();now.setHours(0,0,0,0);
+  if(now<start)return{state:'pending',productive:0};
+  let productive=0;
+  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=fmt(d),data=db[k];
+    if(!data||!data.blocks)continue;let bd=0;
+    SB.forEach(b=>{if((data.blocks[b.id]||{}).status==='Completed')bd++});
+    if(bd>=3)productive++}
+  if(now>end)return{state:productive>=4?'complete':'missed',productive};
+  return{state:'active',productive};
+}
+
+function rJourney(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const dayIn=Math.max(0,Math.floor((now-JOURNEY_START)/864e5)+1);
+  const totalDays=Math.floor((EXAM-JOURNEY_START)/864e5);
+  const daysLeft=Math.max(0,Math.ceil((EXAM-now)/864e5));
+  const weekStatuses=[];for(let i=1;i<=19;i++)weekStatuses.push(jrWkStatus(i));
+  const weeksDone=weekStatuses.filter(w=>w.state==='complete').length;
+  const climbPct=Math.round((weeksDone/19)*100);
+  document.getElementById('jrStats').innerHTML=`
+    <div class="jr-stat"><div class="jr-val" style="color:var(--accent2)">${dayIn}</div><div class="jr-lbl">Day Of ${totalDays+1}</div></div>
+    <div class="jr-stat"><div class="jr-val" style="color:var(--amber)">${daysLeft}</div><div class="jr-lbl">Days To Exam</div></div>
+    <div class="jr-stat"><div class="jr-val" style="color:var(--green2)">${weeksDone}/19</div><div class="jr-lbl">Weeks Done</div></div>
+    <div class="jr-stat"><div class="jr-val" style="color:#f0c878">${climbPct}%</div><div class="jr-lbl">Climb</div></div>`;
+  document.getElementById('jrPhases').innerHTML=PHASES.map(p=>{
+    const states=p.weeks.map(w=>weekStatuses[w-1].state);
+    const allDone=states.every(s=>s==='complete');
+    const hasActive=states.includes('active');
+    const cls=allDone?'complete':hasActive?'active':'';
+    const stTxt=allDone?'✓ Done':hasActive?'In progress':'Pending';
+    const wkRange=p.weeks.length>1?`Wk ${p.weeks[0]}–${p.weeks[p.weeks.length-1]}`:`Wk ${p.weeks[0]}`;
+    return`<div class="jr-phase ${cls}">
+      <div class="jr-pn">${p.emoji}</div>
+      <div class="jr-pinfo"><div class="jr-pname">Phase ${p.n} · ${p.label}</div><div class="jr-pdesc">${p.desc}</div><div class="jr-pwk">${wkRange}</div></div>
+      <div class="jr-pst">${stTxt}</div></div>`}).join('');
+  document.getElementById('jrWeeks').innerHTML=weekStatuses.map((w,i)=>
+    `<div class="jr-wk ${w.state}" title="Week ${i+1} · ${w.state}${w.productive?' · '+w.productive+' productive days':''}">${i+1}</div>`).join('');
 }
 
 function rDayLabel(){
